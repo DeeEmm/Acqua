@@ -1,5 +1,5 @@
-# AquaDP
-Aqua - Data Acquisition and Processing unit
+# Acqua
+Acqua - Data Acquisition and Processing unit
 
 The AcquaDP project is a data acquisition and processing system based on the Raspberry pi and Arduino nano.
 
