@@ -1,15 +1,32 @@
 # Acqua
 Acqua - Data Acquisition and Processing unit
 
-
 Acqua is a simple extensible data acquisition controller that can also perform time and event based control. Acqua uses pre-configured nodes connected via I2C to provide clean formatted and filtered data to the main controller which can then be easily logged or processed.
 
-## Basic Operation
+## Overview
 
-The Acqua project is based on the Raspberry pi and Arduino nano.
+The Acqua project is based on the Raspberry pi and Arduino nano. The Raspberry Pi acts as the main Acqua controller and runs as a web application server that can be accessed via a browser. All control, configuration and monitoring functions are accessible from the browser.
 
-The Raspberry Pi acts as the master controller and web app server and the Arduino nano/micros act as slave devices on an I2C network. The slave system is user extensible and has the ability for nodes to be created to interface to practically anything. Whilst the original idea was in the context of a reef tank controller, by using generalised descriptors the program can be used as a datalogger or programmable controller for any system requiring automation. This includes systems like irrigation, aquariums, aquaponics, motorsport, experimental systems, in fact anywhere where a simple user programmable datalog / control system is required. The extensibility of the system allows quick integration of any kind of device and includes wide capabilities as standard. Additional cases can easily be catered for by editing the nano code to suit.
+External devices are connected via the I2C network and are known as nodes. A Node is essentially an intelligent data interface made from an Arduino Nano. Arduino Nano's are cheap, accessible, relatively low power and easy to program. They therefore provide the perfect platform for undertaking simple data acquisition, data manipulation and control. Arduino Nanos are easy to integrate into existing equipment, both due to thier small footprint but also the amount and variety of available I/O and are also able to communicate and control using a variety of different protocols and control schemas.
 
+Data is read from the Node, and where supported, control actions can be written to the Node via a simple serial API. In some cases Nodes can also carry out control actions autonomously. One such example is a heated sensor, where the heater control and regulation is carried out entirely on the Nano. In this case the setpoint is sent to the Nano via the Serial API and stored in the NVM on the Nano. This decentralises control tasks which in turn simplifies them. It also reduces overheads on the Acqua controller which increases scalability.
+
+All Nodes run standard code and the capabilities of each Node are enabled and defined within their configuration files at compile time. Further actions may also be configurable at run time via the API on some Node types. A complete list of available Node types along with configuration information can be found in the Github repository.
+
+## Control Actions
+
+Once the Node has been added to Acqua, you can then associate control actions with it. A control action is a user defined task that is initiated by a time or event based trigger. These actions can be system based, for example sending a notification email or logging a value, or they can be Node based, for example enabling an output or changing a setpoint. Control actions can also be joined using logical operators which allows complex control schemas to be created. The Acqua system is also easily extensible by the end user with the creation of custom Node code if required.
+
+# Basic Specs
+
+## Main Rpi functions
+- Web app server to serve main control interface - accessible via users browser
+- Programmable timers (using cron)
+- Conditional control engine - if-this-then-that
+- Device (node) configuration - name / node type (sets api requirements) / polling frequency / watchdog (+frequency) / data logged? / 
+- GPIO configuration
+- Data logging inc manual data entry for test results
+- Alerts
 
 ## Basic I2C protocol
 
@@ -21,17 +38,6 @@ The Raspberry Pi acts as the master controller and web app server and the Arduin
 - RPi can send control commands to nodes to perform control actions where they are available
 
 Note: Nodes are slave devices however they could also can act as master to other slaves on the I2C network as I2C supports multiple masters. Not really sure of a use case where this may be needed (synchronised wave-makers?) will explore later.
-
-
-## Main Rpi functions
-- Web app server to serve main control interface - accessible via users browser
-- Programmable timers (using cron)
-- Conditional control engine - if-this-then-that
-- Device (node) configuration - name / node type (sets api requirements) / polling frequency / watchdog (+frequency) / data logged? / 
-- GPIO configuration
-- Data logging inc manual data entry for test results
-- Alerts
-
 
 ## I/O data types
 - Digital input
@@ -128,15 +134,4 @@ so values recorded for each sensor are:
 
 A unique UID is also set for each unit which then allows SQL join operations across tables for data logging and data analysis. 
 
-## Getting Started
-
-To get started you will need to add a Node. A Node is essentially an intelligent data interface made from an Arduino Nano. Arduino Nano's are cheap, accessible and easy to program and therefore provide the perfect platform for undertaking simple data acquisition, data manipulation and control. Arduino Nanos are easy to integrate into existing equipment and are able to communicate and control using a variety of different protocols.
-
-Data can be read from the Node, and where supported, control actions can be written to the Node via a simple serial API. In some cases Nodes can also carry out control actions autonomously. One such example is a heated sensor, where the heater control and regulation is carried out entirely on the Nano. In this case the setpoint is sent to the Nano via the Serial API and stored in the NVM on the Nano. This decentralises control tasks which in turn simplifies them. It also reduces overheads on the Acqua controller which increases scalability.
-
-All Nodes run standard code and the capabilities of each Node are enabled and defined within their configuration files at compile time. Further actions may also be configurable at run time via the API on some Node types. A complete list of available Node types along with configuration information can be found in the Github repository.
-
-## Control Actions
-
-Once the Node has been added to Acqua, you can then associate control actions with it. A control action is a user defined task that is initiated by a time or event based trigger. These actions can be system based, for example sending a notification email or logging a value, or they can be Node based, for example enabling an output or changing a setpoint. Control actions can also be joined using logical operators which allows complex control schemas to be created. The Acqua system is also easily extensible by the end user with the creation of custom Node code.
 
