@@ -5,7 +5,7 @@ Acqua is a simple extensible data acquisition controller that can also perform t
 
 ## Overview
 
-The Acqua project is based on the Raspberry pi and Arduino nano. The Raspberry Pi acts as the main Acqua controller and runs as a web application server that can be accessed via a browser. All control, configuration and monitoring functions are accessible from the browser.
+The Acqua project is based on the Raspberry pi and Arduino nano. The Raspberry Pi acts as the main Acqua controller and runs as a web application server that can be accessed via a browser. All control, configuration and monitoring functions are made via the browser.
 
 External devices are connected via the I2C network and are known as nodes. A Node is essentially an intelligent data interface made from an Arduino Nano. Arduino Nano's are cheap, accessible, relatively low power and easy to program. They therefore provide the perfect platform for undertaking simple data acquisition, data manipulation and control. Arduino Nanos are easy to integrate into existing equipment, both due to thier small footprint but also the amount and variety of available I/O and are also able to communicate and control using a variety of different protocols and control schemas.
 
