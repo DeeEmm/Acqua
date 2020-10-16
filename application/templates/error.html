@@ -1,0 +1,15 @@
+{%- extends "layout.html" %}
+{% import "bootstrap/utils.html" as utils %}
+
+{% block title %}Error!{% endblock %}
+
+{% block main %}
+  {{ super() }}
+  <div class="container">
+	  <div class="jumbotron">
+		<h1>Oh Noo :(</h1>
+		<p>There has been an error</p>
+		<p>Error Code: {{ERROR_CODE}}</p>
+		</div>
+  </div>
+{%- endblock %}

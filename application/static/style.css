@@ -1,0 +1,176 @@
+/**************************
+ * General
+ */
+ 
+
+li {
+	font-size: 24px;
+}
+
+body {
+  font-size: .875rem;
+}
+
+.feather {
+  width: 16px;
+  height: 16px;
+  vertical-align: text-bottom;
+}
+
+.container {
+  margin-top: 50px;
+}
+
+
+/**************************
+ * Sidebar
+ */
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 100; /* Behind the navbar */
+  padding: 48px 0 0; /* Height of navbar */
+  box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+}
+
+@media (max-width: 767.98px) {
+  .sidebar {
+	top: 5rem;
+  }
+}
+
+.sidebar-sticky {
+  position: relative;
+  top: 0;
+  height: calc(100vh - 48px);
+  padding-top: .5rem;
+  overflow-x: hidden;
+  overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+}
+
+@supports ((position: -webkit-sticky) or (position: sticky)) {
+  .sidebar-sticky {
+	position: -webkit-sticky;
+	position: sticky;
+  }
+}
+
+.sidebar .nav-link {
+  font-weight: 500;
+  color: #333;
+}
+
+.sidebar .nav-link .feather {
+  margin-right: 4px;
+  color: #999;
+}
+
+.sidebar .nav-link.active {
+  color: #007bff;
+}
+
+.sidebar .nav-link:hover .feather,
+.sidebar .nav-link.active .feather {
+  color: inherit;
+}
+
+.sidebar-heading {
+  font-size: .75rem;
+  text-transform: uppercase;
+}
+
+// Config page navigation
+.hiddendiv {display: none; }
+.active {display: block;}
+.v-pills-general-settings:focus ~ #v-pills-general-settings {display: block; }
+.v-pills-communication:focus ~ #v-pills-communication {display: block; }
+.v-pills-node-configuration:focus ~ #v-pills-node-configuration {display: block; }
+.v-pills-gpio-configuration:focus ~ #v-pills-gpio-configuration {display: block; }
+.v-pills-control-schema:focus ~ #v-pills-control-schema {display: block; }
+.v-pills-cron-tasks:focus ~ #v-pills-cron-tasks {display: block; }
+.v-pills-conditional-control:focus ~ #v-pills-conditional-control {display: block; }
+.v-pills-user-management:focus ~ #v-pills-user-management {display: block; }
+.v-pills-event-history:focus ~ #v-pills-event-history {display: block; }
+.v-pills-database-maintenance:focus ~ #v-pills-database-maintenance {display: block; }
+
+/**************************
+ * Navbar
+ */
+ 
+ 
+ 
+ .navbar .container-fluid {
+     max-width:1175px;
+ }
+
+.navbar-brand>img {
+  max-height: 40px;
+  width: auto;
+}
+
+.navbar-brand {
+  float: left;
+  padding: 5px 15px;
+}
+
+.header-logo {
+  height: 90px;
+  width: auto;
+  padding: 0px 20px 10px 0px;
+}
+  
+.navbar-brand {
+  padding: 5px 15px;
+}
+
+.navbar .navbar-toggler {
+  top: .25rem;
+  right: 1rem;
+}
+
+.navbar .form-control {
+  padding: .75rem 1rem;
+  border-width: 0;
+  border-radius: 0;
+}
+
+.form-control-dark {
+  color: #fff;
+  background-color: rgba(255, 255, 255, .1);
+  border-color: rgba(255, 255, 255, .1);
+}
+
+.form-control-dark:focus {
+  border-color: transparent;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
+}
+
+.sidebar {
+	position: fixed;
+	top: 52px;
+	bottom: 0;
+	left: 0;
+	z-index: 100;
+	padding: 5px 0 0;
+}
+
+
+
+
+/**************************
+ * Footer
+ */
+
+#footer {
+  max-width: 1150px;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+  font-size: 12px;
+}
+
+

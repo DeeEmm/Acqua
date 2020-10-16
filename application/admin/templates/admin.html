@@ -1,0 +1,130 @@
+<!--TODO-----------------------------------------------
+Need to look at implementing flask-admin
+https://github.com/flask-admin/flask-admin
+https://flask-admin.readthedocs.io/en/latest/introduction/
+
+-->
+
+
+
+{%- extends "layout.html" %}
+{% import "bootstrap/utils.html" as utils %}
+
+{% block title %}Configuration{% endblock %}
+
+{% block main %}
+  <div class="container">
+  {%- with messages = get_flashed_messages(with_categories=True) %}
+  {%- if messages %}
+	<div class="row">
+	  <div class="col-md-12">
+		{{utils.flashed_messages(messages)}}
+	  </div>
+	</div>
+  {%- endif %}
+  {%- endwith %}
+
+<!--https://getbootstrap.com/docs/4.5/examples/dashboard/#-->
+	
+	<div class="container-fluid">
+	  <div class="row">
+		<nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar">
+		  <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical"">
+			<ul class="nav flex-column">
+			  <li class="nav-item">
+				<a class="nav-link" href="#v-pills-general-settings" data-toggle="pill" >
+				  <span data-feather="home"></span>
+				  General Settings
+				</a>
+			  </li>
+			  <li class="nav-item">
+				<a class="nav-link" href="#v-pills-communication" data-toggle="pill" >
+				  <span data-feather="users"></span>
+				  Communication
+				</a>
+			  </li>
+			  <li class="nav-item">
+				<a class="nav-link" href="#v-pills-node-configuration" data-toggle="pill">
+				  <span data-feather="shopping-cart"></span>
+				  Node Configuration
+				</a>
+			  </li>
+			  <li class="nav-item">
+				<a class="nav-link" href="#v-pills-gpio-configuration" data-toggle="pill">
+				  <span data-feather="users"></span>
+				  GPIO Configuration
+				</a>
+			  </li>
+			  <li class="nav-item">
+				<a class="nav-link" href="#v-pills-control-schema" data-toggle="pill">
+				  <span data-feather="bar-chart-2"></span>
+				  Control Schema
+				</a>
+			  </li>
+			  <li class="nav-item">
+				<a class="nav-link" href="#v-pills-cron-tasks" data-toggle="pill">
+				  <span data-feather="file-text"></span>
+				  Cron Tasks
+				</a>
+			  </li>
+			  <li class="nav-item">
+				<a class="nav-link" href="#v-pills-conditional-control" data-toggle="pill">
+				  <span data-feather="file-text"></span>
+				  Conditional Control
+				</a>
+			  </li>
+			  <li class="nav-item">
+				<a class="nav-link" href="#v-pills-user-managmement" data-toggle="pill">
+				  <span data-feather="file-text"></span>
+				  User Management
+				</a>
+			  </li>
+			  <li class="nav-item">
+				<a class="nav-link" href="#v-pills-event-history" data-toggle="pill">
+				  <span data-feather="layers"></span>
+				  Event History
+				</a>
+			  </li>
+			  <li class="nav-item">
+				<a class="nav-link" href="#v-pills-database-management" data-toggle="pill">
+				  <span data-feather="file-text"></span>
+				  Database Management
+				</a>
+			  </li>
+			</ul>
+		  </div>
+		</nav>
+	
+		<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+		  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+			<div class="col-9">
+				<div class="tab-content" id="v-pills-tabContent">
+					<div class="tab-pane active" id="v-pills-general-settings" role="tabpanel" aria-labelledby="v-pills-general-settings"><h2>General Settings</h2><p>The admin page contains ALL of configuration parameters. If it needs to be set up or configured, it'll be in here</p></div>
+					<div class="tab-pane fade" id="v-pills-communication" role="tabpanel" aria-labelledby="cv-pills-communication"><h2>Comminication</h2></div>
+					<div class="tab-pane fade" id="v-pills-node-configuration" role="tabpanel" aria-labelledby="v-pills-node-configuration"><h2>Node Configuration</h2></div>
+					<div class="tab-pane fade" id="v-pills-gpio-configuration" role="tabpanel" aria-labelledby="v-pills-gpio-configuration"><h2>GPIO Configuration</h2></div>
+					<div class="tab-pane fade" id="v-pills-control-schema" role="tabpanel" aria-labelledby="v-pills-control-schema"><h2>Control Schema</h2></div>
+					<div class="tab-pane fade" id="v-pills-cron-tasks" role="tabpanel" aria-labelledby="v-pills-cron-tasks"><h2>CRON Tasks</h2></div>
+					<div class="tab-pane fade" id="v-pills-conditional-control" role="tabpanel" aria-labelledby="v-pills-conditional-control"><h2>Conditional Control</h2></div>
+					<div class="tab-pane fade" id="v-pills-user-managmement" role="tabpanel" aria-labelledby="v-pills-user-managmement"><h2>User Management</h2></div>
+					<div class="tab-pane fade" id="v-pills-event-history" role="tabpanel" aria-labelledby="v-pills-event-history"><h2>Event History</h2></div>
+					<div class="tab-pane fade" id="v-pills-database-management" role="tabpanel" aria-labelledby="v-pills-database-management"><h2>Database Management</h2></div>
+				</div>
+			</div>	
+		
+		</main>
+		
+	  </div>
+	  
+	</div>
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+		  <script>window.jQuery || document.write('<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"><\/script>')</script><script src="static/js/bootstrap.js"></script>
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.9.0/feather.min.js"></script>
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
+			<script src="static/js/dashboard.js">
+				
+		</script>
+	</body>
+</html>
+	
+{%- endblock %}

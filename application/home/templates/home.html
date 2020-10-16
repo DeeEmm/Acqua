@@ -1,0 +1,25 @@
+<!--TODO-----------------------------------------------
+Add basic content - static overview
+Update to advanced content - curated overview
+
+Review footer - https://flask.palletsprojects.com/en/1.1.x/patterns/templateinheritance/
+
+-->
+
+{%- extends "layout.html" %}
+{% import "bootstrap/utils.html" as utils %}
+
+{% block title %}Acqua{% endblock %}
+
+{% block main %}
+  {{ super() }}
+  <div class="container">
+  	<div class="jumbotron">
+  	  <h1>Welcome to Acqua</h1>
+  	  <p><a href="https://github.com/DeeEmm/Acqua">https://github.com/DeeEmm/Acqua</a>
+      <p>Overview page with summary of most important data</p>
+      <p>Eventually it would be good to implement a drag and drop widget style layout</p>
+    	</div>
+  </div>
+{%- endblock %}
+

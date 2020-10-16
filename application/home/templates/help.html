@@ -1,0 +1,63 @@
+<!--TODO-----------------------------------------------
+Update help - add TOC + link to WIKI (Need to create WIKI pages)
+-->
+{%- extends "layout.html" %}
+{% import "bootstrap/utils.html" as utils %}
+
+{% block title %}Help{% endblock %}
+{% block main %}
+<br><br><br><br>
+  <div class="container">
+  {%- with messages = get_flashed_messages(with_categories=True) %}
+  {%- if messages %}
+	<div class="row">
+	  <div class="col-md-12">
+		{{utils.flashed_messages(messages)}}
+	  </div>
+	</div>
+  {%- endif %}
+  {%- endwith %}
+	<div class="jumbotron">
+	    <img class="header-logo" src="{{url_for('static', filename='logotype.png')}}"/>
+		<h2>Welcome to Acqua</h2>
+		<p>{{RELEASE}} | Version {{VERSION}}</p>
+	  <p><a href="https://github.com/DeeEmm/Acqua">Acqua</a> is a simple extensible data acquisition controller that can also perform time and event based control. Acqua uses pre-configured nodes connected via I2C to provide clean formatted and filtered data to the main controller which can then be easily logged or processed.</p>
+	  <h2>Getting Started</h2>
+	  <p>To get started you will need to add a Node. A Node is essentially an intelligent data interface made from an Arduino Nano. Arduino Nano's are cheap, accessible and easy to program and therefore provide the perfect platform for undertaking simple data acquisition, data manipulation and control. Arduino Nanos are easy to integrate into existing equipment and are able to communicate and control using a variety of different protocols.</p>
+	  <p>Data can be read from the Node, and where supported, control actions can be written to the Node via a simple serial API. In some cases Nodes can also carry out control actions autonomously. One such example is a heated sensor, where the heater control and regulation is carried out entirely on the Nano. In this case the set-point is sent to the Nano via the Serial API and stored in the NVM on the Nano. This decentralises control tasks which in turn simplifies them. It also reduces overheads on the Acqua controller which increases scalability. </p>
+	  <p>All Nodes run standard code and the capabilities of each Node are enabled and defined within their configuration files at compile time. Further actions may also be configurable at run time via the API on some Node types. A complete list of available Node types along with configuration information can be found in the <a href="https://github.com/DeeEmm/Acqua">Github repository.</a>
+	  <h3>Control Actions</h3>
+	  <p>Once the Node has been added to Acqua, you can then associate control actions with it. A control action is a user defined task that is initiated by a time or event based trigger. These actions can be system based, for example sending a notification email or logging a value, or they can be Node based, for example enabling an output or changing a setpoint. Control actions can also be joined using logical operators which allows complex control schemas to be created. The Acqua system is also easily extensible by the end user with the creation of custom Node code. </p> 
+	  <h3>Quick Start</h3>
+		  <ul class="list-group">
+			  <li class="list-group-item">Create your Node by loading the node code into a Nano.</li>
+			  <li class="list-group-item">Bench test the Node using the serial monitor.</li>
+			  <li class="list-group-item">Connect the Node to the Acqua controller using the I2C bus.</li>
+			  <li class="list-group-item">Add the Node to the Acqua configuration.</li>
+			  <li class="list-group-item">View and control the Node via the Acqua interface.</li>
+			  <li class="list-group-item">Create control actions to monitor and utilise your Node.</li>
+			  <li class="list-group-item">Relax and enjoy a nice cuppa.</li>
+		  </ul>		
+	  </p>
+	  <p>
+		  <a class="btn btn-lg btn-default" role="button"href="https://github.com/DeeEmm/Acqua/wiki" >View the Wiki</a>
+		  <a class="btn btn-lg btn-default" role="button"href="https://github.com/DeeEmm/Acqua/wiki/1.-Installation" >Installation</a>
+		  <a class="btn btn-lg btn-default" role="button"https://github.com/DeeEmm/Acqua/wiki/2.-Configuration" >Configuration</a>
+		  <a class="btn btn-lg btn-default" role="button"https://github.com/DeeEmm/Acqua/wiki/3.-Operation" >Operation</a>
+		  <a class="btn btn-lg btn-default" role="button"https://github.com/DeeEmm/Acqua/wiki/Node-API" >Nodes</a>
+	  </p>
+	  <hr  />
+	  <h2>Development</h2>
+	  <p>If you want to create a custom Node for your application the best place to start is to take a look at the Node API. You may find that there is already a suitable schema included. Most devices will work with the basic sensor configuration, where an integer value is returned when the node is interrogated. Scaling and units of measurement are defined in the Node configuration on the Acqua controller.</p>
+	  <p>Where more complex control schema is required, for example the control of a complex device, this may be achieved by the grouping of several simpler Node configurations that all interrogate the same Node address, or by the creation of custom Node code.</p>
+	  <p>If custom code is created then the API must also be updated to include the additional control actions required to interface with the Node. Wherever possible it is preferred to use existing control schema.</p>
+	  <p>		  
+		  <a class="btn btn-lg btn-default" role="button"https://github.com/DeeEmm/Acqua/wiki/Node-API" >Node API</a>		  
+	  </p>
+	  <p><a href="https://github.com/DeeEmm/Acqua">https://github.com/DeeEmm/Acqua</a>
+
+	</div>
+
+   </div>
+
+{%- endblock %}
