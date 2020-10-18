@@ -13,16 +13,7 @@ https://flask-admin.readthedocs.io/en/latest/introduction/
 {% block title %}Configuration{% endblock %}
 
 {% block main %}
-  <div class="container">
-  {%- with messages = get_flashed_messages(with_categories=True) %}
-  {%- if messages %}
-	<div class="row">
-	  <div class="col-md-12">
-		{{utils.flashed_messages(messages)}}
-	  </div>
-	</div>
-  {%- endif %}
-  {%- endwith %}
+{{ super() }}
 
 <!--https://getbootstrap.com/docs/4.5/examples/dashboard/#-->
 	
@@ -80,6 +71,12 @@ https://flask-admin.readthedocs.io/en/latest/introduction/
 				</a>
 			  </li>
 			  <li class="nav-item">
+				<a class="nav-link" href="#v-pills-trend-management" data-toggle="pill">
+				  <span data-feather="layers"></span>
+				  Trend Data Management
+				</a>
+			  </li>
+			  <li class="nav-item">
 				<a class="nav-link" href="#v-pills-event-history" data-toggle="pill">
 				  <span data-feather="layers"></span>
 				  Event History
@@ -107,8 +104,19 @@ https://flask-admin.readthedocs.io/en/latest/introduction/
 					<div class="tab-pane fade" id="v-pills-cron-tasks" role="tabpanel" aria-labelledby="v-pills-cron-tasks"><h2>CRON Tasks</h2></div>
 					<div class="tab-pane fade" id="v-pills-conditional-control" role="tabpanel" aria-labelledby="v-pills-conditional-control"><h2>Conditional Control</h2></div>
 					<div class="tab-pane fade" id="v-pills-user-managmement" role="tabpanel" aria-labelledby="v-pills-user-managmement"><h2>User Management</h2></div>
+					<div class="tab-pane fade" id="v-pills-trend-management" role="tabpanel" aria-labelledby="v-pills-trend--management"><h2>Trend management</h2></div>
 					<div class="tab-pane fade" id="v-pills-event-history" role="tabpanel" aria-labelledby="v-pills-event-history"><h2>Event History</h2></div>
-					<div class="tab-pane fade" id="v-pills-database-management" role="tabpanel" aria-labelledby="v-pills-database-management"><h2>Database Management</h2></div>
+					<div class="tab-pane fade" id="v-pills-database-management" role="tabpanel" aria-labelledby="v-pills-database-management">
+						<h2>Database Management</h2>
+						<p>Database management functions</p>
+						<p class="bg-danger">NOTE: Resetting the database is irreversible. Please backup your data before resetting.</p>
+						<button class="btn btn-primary">EXPORT DATABASE</button>  
+						
+						<button class="btn btn-info">IMPORT DATABASE</button>  
+						
+						<button class="btn btn-danger" onclick="window.location.href='{{ url_for( 'admin_bp.database', action='reset') }}';">RESET DATABASE</button>
+		
+					</div>
 				</div>
 			</div>	
 		

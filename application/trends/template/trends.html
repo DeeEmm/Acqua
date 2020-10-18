@@ -10,69 +10,48 @@ Modal Dialog to add trends
 {% block title %}Trends{% endblock %}
 
 {% block main %}
+{{ super() }}
   <div class="container">
-  {%- with messages = get_flashed_messages(with_categories=True) %}
-  {%- if messages %}
-	<div class="row">
-	  <div class="col-md-12">
-		{{utils.flashed_messages(messages)}}
-	  </div>
-	</div>
-  {%- endif %}
-  {%- endwith %}
 
-<!--https://getbootstrap.com/docs/4.5/examples/dashboard/#-->
+  <!-- This page based on example located at https://getbootstrap.com/docs/4.5/examples/dashboard/#-->
 	
 	<div class="container-fluid">
 	  <div class="row">
 		<nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar">
 		  <div class="sidebar-sticky pt-3">
 			<ul class="nav flex-column">
-			  <li class="nav-item">
-				<a class="nav-link" href="#">
-				  <span data-feather="home"></span>
-				  Calcium <span data-feather="plus-circle"></span>
-				</a>
-			  </li>
-			  <li class="nav-item">
-				<a class="nav-link" href="#">
-				  <span data-feather="file"></span>
-				  Alkalinity <span data-feather="plus-circle"></span>
-				</a>
-			  </li>
-			  <li class="nav-item">
-				<a class="nav-link" href="#">
-				  <span data-feather="shopping-cart"></span>
-				  Magnesium <span data-feather="plus-circle"></span>
-				</a>
-			  </li>
-			  <li class="nav-item">
-				<a class="nav-link" href="#">
-				  <span data-feather="users"></span>
-				  Phosphate <span data-feather="plus-circle"></span>
-				</a>
-			  </li>
-			  <li class="nav-item">
-				<a class="nav-link" href="#">
-				  <span data-feather="bar-chart-2"></span>
-				  Nitrate <span data-feather="plus-circle"></span>
-				</a>
-			  </li>
-			  <li class="nav-item">
-				<a class="nav-link" href="#">
-				  <span data-feather="file-text"></span>
-				  PH <span data-feather="plus-circle"></span>
-				</a>
-			  </li>
-			  <li class="nav-item">
-				<a class="nav-link" href="#">
-				  <span data-feather="file-text"></span>
-				  Salinity <span data-feather="plus-circle"></span>
-				</a>
-			  </li>
+				
+				
+				
+				<li class="nav-item">	
+				<h1>Add Trend Value</h1>
+					<form method="POST" action="/trends">
+						<input type="text" name="description">
+						<input type="submit" value="Add">
+					</form>
+				</li>	
+				
+				<h1>Trends</h1>
+				{% for trend in trends %}
+					<li class="nav-item">	
+						<a class="nav-link" href="#">
+							<span data-feather="home"></span>
+					    	{{trend.description}}
+						
+						<form method="POST" action="{{url_for('trends_bp.delete')}}" style="float:right;">
+							  <input type="hidden" value="{{trend.description}}" name="description">
+							  <button><input type="submit" data-feather="minus-circle" value='Delete'></button>
+						</form>
+						</a>
+					</li>	
+				{% endfor %}				  
 			</ul>
 		  </div>
 		</nav>
+		
+		
+		
+		<!--Start of main section -->
 	
 		<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
 		  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
@@ -89,7 +68,19 @@ Modal Dialog to add trends
 			</div>
 		  </div>
 	
+
+		  <!--Graph section -->
+
+
 		  <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas>
+	
+	
+	
+		  <!--Start of data section -->
+
+
+	
+	
 	
 		  <h2>Datalog</h2>
 		  <div class="table-responsive">

@@ -17,9 +17,9 @@
 {% endblock %}
 
 {% block content %}
-
+<div class="container">
    {% block main %}
-      <div class="container">
+      <div class="main">
        {%- with messages = get_flashed_messages(with_categories=True) %}
           {%- if messages %}
            <div class="row">
@@ -42,5 +42,5 @@
      </div> <!-- row -->
    </div>
    {%- endblock %}
-
+</div>
 {%- endblock %}

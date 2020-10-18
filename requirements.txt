@@ -1,2 +1,4 @@
 flask-bootstrap
 flask-nav
+sqlalchemy 
+flask-sqlalchemy
