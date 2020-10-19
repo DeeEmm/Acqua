@@ -8,8 +8,10 @@
 cd /home/acqua
 
 # Lets install dependencies by default to pick up any changes
-pip install -r requirements.txt
+# pip install -r requirements.txt
+
+# where's our configuration file?
+export APP_CONFIG_FILE=config.py
 
 # run the data server (opens on port 80)
-
 python3 wsgi.py &

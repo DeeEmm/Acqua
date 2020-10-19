@@ -3,7 +3,7 @@ from flask_bootstrap import Bootstrap
 
 def create_app():
     app = Flask(__name__, instance_relative_config=False)
-    app.config.from_pyfile('config.py')
+    app.config.from_envvar('APP_CONFIG_FILE')
 
     # Initialise Plugins
     bootstrap = Bootstrap(app)

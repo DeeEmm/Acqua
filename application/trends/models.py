@@ -38,20 +38,23 @@ from datetime import datetime
 class Trends(db.Model):
     __tablename__ = 'trends'
     id = db.Column(db.Integer, unique=True, primary_key=True, )
-    description = db.Column(db.String(80))
-    unit_of_measure = db.Column(db.Integer)
     trend_type = db.Column(db.Integer)
-    
+    description = db.Column(db.String(80))
+    unit_of_measure = db.Column(db.String(80))
+
     def __repr__(self):
         return "<Trends: {}>".format(self.description)
 
 
-# Trend_data - id | trend_id | datetime | value
+# Trend_data - id | trend_id | timestamp | value
 class Trend_Data(db.Model):
-    id = db.Column(db.Integer, unique=True, nullable=False, primary_key=True)
-    trend_id = db.Column(db.Integer, unique=True, nullable=False)
-    datetime = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    value = db.Column(db.String(80), unique=True, nullable=False)
+    __tablename__ = 'trend_data'
+    id = db.Column(db.Integer, unique=True, primary_key=True)
+    trend_id = db.Column(db.Integer)
+    timestamp = db.Column(db.String(80))
+#    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    value = db.Column(db.String(80))
+    
     def __repr__(self):
         return "<Trend_Data: {}>".format(self.value)
 

@@ -1,6 +1,6 @@
 MAJOR_VERSION = "1"
 MINOR_VERSION = "0"
-BUILD_NUMBER = "20101901"
+BUILD_NUMBER = "20101701"
 RELEASE = "V.1.0-ALPHA"
 VERSION = MAJOR_VERSION + '.' + MINOR_VERSION + '.' + BUILD_NUMBER
 TESTING = True
@@ -11,6 +11,6 @@ FLASK_ENV = 'development'
 # SECRET_KEY = 'GDtfDCFYjD'
 
 SQLALCHEMY_TRACK_MODIFICATIONS = False
-SQLALCHEMY_DATABASE_URI = 'sqlite:////home/acqua.db'
+SQLALCHEMY_DATABASE_URI = 'sqlite:////home/acqua/acqua.db'
 # SQLALCHEMY_ECHO: # Prints db-related actions to console for debugging.
 # SQLALCHEMY_ENGINE_OPTIONS:

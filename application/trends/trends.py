@@ -24,17 +24,25 @@ trends_bp = Blueprint(
     static_url_path='/trends'
 )
 
-
 @trends_bp.route('/trends', methods=["GET", "POST"])
 def trends():
     with app.app_context():
         if request.form:
-            trend = Trends(description=request.form.get("description"))
-#            trend = Trends(id='',trend_type=1,description=request.form.get("description"),unit_of_measure='rats')
+            trend = Trends(
+                description=request.form.get("description"),
+                trend_type=request.form.get("trend_type"),
+                unit_of_measure=request.form.get("unit_of_measure")
+            )
             db.session.add(trend)
             db.session.commit()
         trends = Trends.query.all()
-        return render_template("trends.html", trends=trends)
+#        trend_data = Trend_Data.query.all()
+        trend_data = Trend_Data.query\
+        .join(Trends, Trend_Data.id==Trends.id)\
+        .add_columns(Trend_Data.trend_id, Trend_Data.timestamp, Trend_Data.value, Trends.unit_of_measure, Trends.trend_type)\
+        .filter(Trend_Data.id == Trends.id)\
+        
+        return render_template("trends.html", trends=trends, trend_data=trend_data, release=release, version=version)
 
 
 @trends_bp.route("/trends/update", methods=["POST"])
@@ -45,7 +53,8 @@ def update():
         trend = Trends.query.filter_by(description=olddescription).first()
         trend.description = newdescription
         db.session.commit()
-        return redirect("/trends")
+        return redirect("/trends", trends=trends, release=release, version=version)
+
 
 @trends_bp.route("/trends/delete", methods=["GET", "POST"])
 def delete():
@@ -54,4 +63,4 @@ def delete():
     db.session.delete(trend)
     db.session.commit()
     trends = Trends.query.all()
-    return render_template("trends.html", trends=trends)
+    return redirect("/trends", trends=trends, release=release, version=version)

@@ -39,11 +39,11 @@ def database(action):
 def reset():
     conn = sqlite3.connect('acqua.db')
     conn.execute('DROP TABLE IF EXISTS trend_types;')
-    conn.execute('CREATE TABLE trend_types (id INT, description TEXT);')
+    conn.execute('CREATE TABLE trend_types (id INTEGER PRIMARY KEY, description TEXT);')
     conn.execute('DROP TABLE IF EXISTS trends;')
-    conn.execute('CREATE TABLE trends (id INT, description TEXT(80), unit_of_measure INT, trend_type INT);')
+    conn.execute('CREATE TABLE trends (id INTEGER PRIMARY KEY, description TEXT(80), unit_of_measure TEXT(80), trend_type INT);')
     conn.execute('DROP TABLE IF EXISTS trend_data;')
-    conn.execute('CREATE TABLE trend_data (id INT, trend_id INT, datetime TEXT, value REAL);')
+    conn.execute('CREATE TABLE trend_data (id INTEGER PRIMARY KEY, trend_id INT, timestamp TEXT(80), value REAL);')
     conn.close()
     return redirect(url_for('admin_bp.admin')) # just a test
     
