@@ -1,3 +1,7 @@
+- Version 1.0-Alpha Build V1.0.20102101 
+	- Added basic trend_data entry form
+	- Added javascript to populate chart from datatable data
+
 - Version 1.0-Alpha Build V1.0.20102001 
 	- Added join between trends and trend_data tables for datalist
 	- Added datatables library for datalist rendering

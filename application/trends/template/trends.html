@@ -36,15 +36,20 @@ Modal Dialog to add trends
 				<h1>Trends</h1>
 				{% for trend in trends %}
 					<li class="nav-item">	
+						<span data-feather="home"></span>
 						<a class="nav-link" href="#">
-							<span data-feather="home"></span>
 					    	{{trend.description}} <small>( {{trend.unit_of_measure}} ) </small> 
+						</a>
 						
 						<form method="POST" action="{{url_for('trends_bp.delete')}}" style="float:right;">
 							  <input type="hidden" value="{{trend.description}}" name="description">
 							  <button><input type="submit" data-feather="minus-circle" value='Delete'></button>
 						</form>
-						</a>
+						<form method="POST" action="{{url_for('trends_bp.add_data')}}" style="float:right;">
+							<input type="hidden" value="{{trend.id}}" name="trend_id">
+							<input type="text" name="value">
+						  <button><input type="submit" data-feather="plus-circle" value='Add Data'></button>
+						</form>
 					</li>	
 				{% endfor %}				  
 			</ul>
@@ -71,10 +76,10 @@ Modal Dialog to add trends
 		  </div>
 	
 
-		  <!--Graph section -->
+		  <!-- Chart -->
 
 
-		  <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas>
+		  <canvas class="my-4 w-100" id="trendChart" width="900" height="380"></canvas>
 	
 	
 	
@@ -84,9 +89,9 @@ Modal Dialog to add trends
 
 	
 	
-		  <h2>Datalog</h2>
-		  <div class="table-responsive">
-			<table id="datatable" class="table table-striped table-sm">
+		  <h2>Data</h2>
+		  <div class="table table-responsive">
+			<table id="dataTable" class="table table-striped table-sm">
 			  <thead>
 				<tr>
 				  <th>#</th>
@@ -119,25 +124,97 @@ Modal Dialog to add trends
 	  
 	</div>
 	{% block javascript %}
-	<!-- https://www.chartjs.org/docs/latest/ -->
 
 	<script>window.jQuery || document.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"><\/script>')</script>
 	<script src="{{url_for('trends_bp.static', filename='bootstrap.bundle.min.js')}}"></script>
-
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.9.0/feather.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
-	<script src="{{url_for('trends_bp.static', filename='dashboard.js')}}"></script>
 
+	<!-- Data table -->
 	<!-- https://datatables.net/ -->
 	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.22/datatables.css"/>	 
 	<script type="text/javascript" src="https://cdn.datatables.net/v/bs/dt-1.10.22/datatables.js"></script>
-		
-    <script>$(document).ready( function () {
+
+
+	<script>
+	$(document).ready( function () {
 		$.noConflict();
-		  $('#datatable').DataTable();
-	  } );
-  	</script>
-	  {%- endblock %}
+		  $('#dataTable').DataTable();
+		} );  
+	</script>
+
+
+	  
+	<!-- Chart Library: https://www.chartjs.org/docs/latest/ -->
+	<!-- Data table import adapted from: https://css-tricks.com/the-many-ways-of-getting-data-into-charts/ -->
+	<script>
+	
+		function BuildChart(labels, values, chartTitle) {
+		  var ctx = document.getElementById("trendChart");
+		  var myChart = new Chart(ctx, {
+			type: 'line',
+			data: {
+			  labels: labels, // Our labels
+			  datasets: [{
+				label: trendChart, // Name the series
+				data: values, // Our values
+			  }]
+			},
+			options: {
+				label: "Trend Data",
+				fill: false
+			}
+		  });
+		  return myChart;
+		}
+		
+		var table = document.getElementById("dataTable");
+		var json = []; // First row needs to be headers 
+		var headers =[];
+		for (var i = 0; i < table.rows[0].cells.length; i++) {
+		  headers[i] = table.rows[0].cells[i].innerHTML.toLowerCase().replace(/ /gi, '');
+		}
+		
+		// Go through cells 
+		for (var i = 1; i < table.rows.length; i++) {
+		  var tableRow = table.rows[i];
+		  var rowData = {};
+		  for (var j = 0; j < tableRow.cells.length; j++) {
+			rowData[headers[j]] = tableRow.cells[j].innerHTML;
+		  }
+		
+		  json.push(rowData);
+		}
+		
+		console.log(json);
+		
+		// Map JSON values back to label array
+		var labels = json.map(function (e) {
+		  return e.date;
+		});
+		console.log(labels); // ["2016", "2017", "2018", "2019"]
+		
+		// Map JSON values back to values array
+		var values = json.map(function (e) {
+		  return e.value;
+		});
+		console.log(values); // ["10", "25", "55", "120"]
+		
+		var chart = BuildChart(labels, values, "Trend Data Values");
+	
+
+	</script> 
+	
+	
+	
+
+	
+
+	
+	
+	
+	
+	{%- endblock %}
 
 	
 	

@@ -31,7 +31,7 @@
 # perform an admin function | run a script | run a shell command
 
 from application.database import db
-from datetime import datetime
+from sqlalchemy.sql import func
 
 
 # Trends - id | type | description | unit
@@ -51,10 +51,10 @@ class Trend_Data(db.Model):
     __tablename__ = 'trend_data'
     id = db.Column(db.Integer, unique=True, primary_key=True)
     trend_id = db.Column(db.Integer)
-    timestamp = db.Column(db.String(80))
-#    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
-    value = db.Column(db.String(80))
-    
+#    timestamp = db.Column(db.String(80))
+    timestamp = db.Column(db.DateTime, default=func.now())
+    value = db.Column(db.Float(40))
+
     def __repr__(self):
         return "<Trend_Data: {}>".format(self.value)
 
