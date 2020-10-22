@@ -1,0 +1,10 @@
+{% block database_management %}
+	<h2>Database Management</h2>
+	<p>Database management functions</p>
+	<p class="bg-danger">NOTE: Resetting the database is irreversible. Please backup your data before resetting.</p>
+	<button class="btn btn-primary">EXPORT DATABASE</button>  
+	
+	<button class="btn btn-info">IMPORT DATABASE</button>  
+	
+	<button class="btn btn-danger" onclick="window.location.href='{{ url_for( 'admin_bp.database', action='reset') }}';">RESET DATABASE</button>
+{%- endblock %}

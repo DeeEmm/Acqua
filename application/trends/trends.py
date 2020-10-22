@@ -1,5 +1,6 @@
 from flask import Flask
 # from flask.ext.sqlalchemy import SQLAlchemy
+from sqlalchemy.sql import select
 from sqlalchemy.sql import func
 from sqlalchemy import Column, Integer, DateTime
 from flask import render_template
@@ -7,11 +8,13 @@ from flask import request
 from flask import Blueprint
 from flask import current_app as app
 from flask import redirect
+from markupsafe import escape
 # from datetime import datetime
 
 from application.trends.models import db
 from application.trends.models import Trends
 from application.trends.models import Trend_Data
+from markupsafe import escape
 
 release = app.config["RELEASE"]
 version = app.config["VERSION"]
@@ -26,6 +29,18 @@ trends_bp = Blueprint(
 )
 
 
+@trends_bp.route('/showtrend/<active_trend_id>')
+def showtrend(active_trend_id=None):
+
+    trends = Trends.query.all()
+    trend_name = trends[int(active_trend_id)-1].description
+
+    trend_data = Trend_Data.query.filter_by(trend_id=active_trend_id).all()
+        
+    return render_template("trends.html", trends=trends, trend_data=trend_data, trend_name=trend_name, release=release, version=version)
+
+
+
 @trends_bp.route('/trends', methods=["GET", "POST"])
 def trends():
     with app.app_context():
@@ -37,17 +52,19 @@ def trends():
             )
             db.session.add(trend)
             db.session.commit()
+
+
         trends = Trends.query.all()
+#         trend_data = session.query(Trend_Data).filter(Trend_Data.trend_id == trend_id).all()
         trend_data = Trend_Data.query.all()
 #        trend_data = Trend_Data.query\
 #        .join(Trends, Trend_Data.id==Trends.id)\
 #        .add_columns(Trend_Data.trend_id, Trend_Data.timestamp, Trend_Data.value, Trends.unit_of_measure, Trends.trend_type)\
 #        .filter(Trend_Data.id == Trends.id)\
 
-        return render_template("trends.html", trends=trends,
-        trend_data=trend_data, release=release, version=version)
-
-
+    return render_template("trends.html", trends=trends, trend_data=trend_data, release=release, version=version)
+        
+                
 @trends_bp.route("/trends/update", methods=["POST"])
 def update():
     with app.app_context():

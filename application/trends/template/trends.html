@@ -20,36 +20,20 @@ Modal Dialog to add trends
 		<nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar">
 		  <div class="sidebar-sticky pt-3">
 			<ul class="nav flex-column">
-				
-				
-				
-				<li class="nav-item">	
-				<h1>Add Trend Value</h1>
-					<form method="POST" action="/trends">
-						<input type="text" name="description"> Description
-						<input type="text" name="trend_type"> Type
-						<input type="text" name="unit_of_measure"> Unit
-						<input type="submit" value="Add">
-					</form>
-				</li>	
-				
 				<h1>Trends</h1>
 				{% for trend in trends %}
-					<li class="nav-item">	
+					<li class="list">	
 						<span data-feather="home"></span>
-						<a class="nav-link" href="#">
+						<a class="nav-link" href="/showtrend/{{trend.id}}">
 					    	{{trend.description}} <small>( {{trend.unit_of_measure}} ) </small> 
 						</a>
-						
-						<form method="POST" action="{{url_for('trends_bp.delete')}}" style="float:right;">
-							  <input type="hidden" value="{{trend.description}}" name="description">
-							  <button><input type="submit" data-feather="minus-circle" value='Delete'></button>
-						</form>
+						<!--
 						<form method="POST" action="{{url_for('trends_bp.add_data')}}" style="float:right;">
 							<input type="hidden" value="{{trend.id}}" name="trend_id">
 							<input type="text" name="value">
 						  <button><input type="submit" data-feather="plus-circle" value='Add Data'></button>
 						</form>
+						-->
 					</li>	
 				{% endfor %}				  
 			</ul>
@@ -62,17 +46,7 @@ Modal Dialog to add trends
 	
 		<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
 		  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-			<h1 class="h2">Magnesium</h1>
-			<div class="btn-toolbar mb-2 mb-md-0">
-			  <div class="btn-group mr-2">
-				<button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
-				<button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
-			  </div>
-			  <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
-				<span data-feather="calendar"></span>
-				This week
-			  </button>
-			</div>
+			<h1 class="h2">{{trend_name}}</h1>
 		  </div>
 	
 
@@ -90,28 +64,24 @@ Modal Dialog to add trends
 	
 	
 		  <h2>Data</h2>
-		  <div class="table table-responsive">
+		  <div class="table table-responsive">			  
 			<table id="dataTable" class="table table-striped table-sm">
 			  <thead>
 				<tr>
-				  <th>#</th>
+				  <th>#{{active_trend_id}}</th>
+				  <th>Trend ID</th>
 				  <th>Date</th>
-				  <th>Trend Type</th>
 				  <th>Value</th>
-				  <th>Units</th>
 				</tr>
 			  </thead>
 			  <tbody>
-				  
-				  
-				{% for trend_data_entry in trend_data %}
-				<tr>
-					<td>{{trend_data_entry.id}}</td>
-					<td>{{trend_data_entry.timestamp}}</td>
-					<td>{{trend_data_entry.trend_type}}</td>
-					<td>{{trend_data_entry.value}}</td>
-					<td>{{trend_data_entry.unit_of_measure}}</td>
-				</tr>
+				{% for trend_entry in trend_data %}
+						<tr>
+							<td>{{trend_entry.id}}</td>
+							<td>{{trend_entry.trend_id}}</td>
+							<td>{{trend_entry.timestamp}}</td>
+							<td>{{trend_entry.value}}</td>
+						</tr>
 				{% endfor %}				  
   
 				  
@@ -125,17 +95,15 @@ Modal Dialog to add trends
 	</div>
 	{% block javascript %}
 
+	<!-- General libraries -->
 	<script>window.jQuery || document.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"><\/script>')</script>
 	<script src="{{url_for('trends_bp.static', filename='bootstrap.bundle.min.js')}}"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.9.0/feather.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
 
 	<!-- Data table -->
 	<!-- https://datatables.net/ -->
 	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.22/datatables.css"/>	 
 	<script type="text/javascript" src="https://cdn.datatables.net/v/bs/dt-1.10.22/datatables.js"></script>
-
-
 	<script>
 	$(document).ready( function () {
 		$.noConflict();
@@ -147,21 +115,21 @@ Modal Dialog to add trends
 	  
 	<!-- Chart Library: https://www.chartjs.org/docs/latest/ -->
 	<!-- Data table import adapted from: https://css-tricks.com/the-many-ways-of-getting-data-into-charts/ -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
 	<script>
 	
-		function BuildChart(labels, values, chartTitle) {
+		function BuildChart(labels, values) {
 		  var ctx = document.getElementById("trendChart");
 		  var myChart = new Chart(ctx, {
 			type: 'line',
 			data: {
 			  labels: labels, // Our labels
 			  datasets: [{
-				label: trendChart, // Name the series
+				label: "Trend Data", // Name the series
 				data: values, // Our values
 			  }]
 			},
 			options: {
-				label: "Trend Data",
 				fill: false
 			}
 		  });
@@ -190,9 +158,9 @@ Modal Dialog to add trends
 		
 		// Map JSON values back to label array
 		var labels = json.map(function (e) {
-		  return e.date;
+		  return e.date.split(" ");
 		});
-		console.log(labels); // ["2016", "2017", "2018", "2019"]
+		console.log(labels); 
 		
 		// Map JSON values back to values array
 		var values = json.map(function (e) {
@@ -200,7 +168,7 @@ Modal Dialog to add trends
 		});
 		console.log(values); // ["10", "25", "55", "120"]
 		
-		var chart = BuildChart(labels, values, "Trend Data Values");
+		var chart = BuildChart(labels, values);
 	
 
 	</script> 

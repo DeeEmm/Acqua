@@ -19,12 +19,12 @@ home_bp = Blueprint(
 @home_bp.route('/index')
 def home():
     return render_template(
-        'home.html', RELEASE=release, VERSION=version
+        'home.html', release=release, version=version
     )
 
 
 @home_bp.route('/help')
 def help():
     return render_template(
-        'help.html', RELEASE=release, VERSION=version
+        'help.html', release=release, version=version
     )

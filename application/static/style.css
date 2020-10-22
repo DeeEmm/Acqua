@@ -18,6 +18,24 @@ body {
 }
 
 
+
+// CSS
+ul.list-group.list-group-hover li:hover{
+    background: $table-bg-hover;
+}
+ul.list-group.list-group-striped li:nth-of-type(odd){
+    background-color: #efefef;
+}
+ul.list-group.list-group-striped li:nth-of-type(even){
+    background: #fff;
+}
+li.list.striped {
+  padding-left:20px !important;
+  padding-right:20px !important;
+  padding-top:10px !important;
+}
+
+
 /**************************
  * Sidebar
  */
@@ -166,5 +184,11 @@ body {
   margin-left: auto;
   font-size: 12px;
 }
+
+
+
+/**************************
+ * Admin
+ */
 
 

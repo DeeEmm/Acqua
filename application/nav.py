@@ -10,7 +10,7 @@ from flask import current_app as app
 # frontend-specific navbars in the respective frontend, but it is also possible
 # to put share navigational items in here.
 
-branding = img(src='static/logotype_dark.png')
+branding = img(src='../../../static/logotype_dark.png') # recursive path is a bit of a hack
 topbar = Navbar(
     branding,
     View('Home', 'home_bp.home'),

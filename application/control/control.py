@@ -18,6 +18,6 @@ control_bp = Blueprint(
 @control_bp.route('/control')
 def control():
 	return render_template(
-		'control.html', RELEASE=release, VERSION=version
+		'control.html', release=release, version=version
 	)
 	
