@@ -137,3 +137,11 @@ so values recorded for each sensor are:
 A unique UID is also set for each unit which then allows SQL join operations across tables for data logging and data analysis. 
 
 
+## Contributing
+
+If you would like to get involved with the project, or wish to get in touch, you can contact me via email or catch me on the Acqua Discord Channel:
+
+Email: deeemm@deeemm.com  
+Discord: [https://discord.gg/3kXX4f4](https://discord.gg/3kXX4f4)
+
+Please note that at this stage support is limited to active contributors only. Beta testing will be announced at a later date.

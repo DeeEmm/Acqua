@@ -36,30 +36,25 @@ admin_bp = Blueprint(
 
 @admin_bp.route('/admin')
 def admin():
-    
-    
+
     trends = Trends.query.all()
     trend_data = Trend_Data.query.all()
-    
-    
-    
+
     return render_template(
         'admin.html', release=release, version=version,
         trends=trends, trend_data=trend_data
     )
 
+# -[General Settings]----------------------------------------------------------
+# -[Communication]-------------------------------------------------------------
+# -[Nodes]---------------------------------------------------------------------
+# -[GPIO]----------------------------------------------------------------------
+# -[Control Schema]------------------------------------------------------------
+# -[CRON Tasks]----------------------------------------------------------------
+# -[Conditional Control]-------------------------------------------------------
+# -[User Management]-----------------------------------------------------------
+# -[Trend Data]----------------------------------------------------------------
 
-
-
-# -[General Settings]-----------------------------------------------------------
-# -[Communication]--------------------------------------------------------------
-# -[Nodes]----------------------------------------------------------------------
-# -[GPIO]-----------------------------------------------------------------------
-# -[Control Schema]-------------------------------------------------------------
-# -[CRON Tasks]-----------------------------------------------------------------
-# -[Conditional Control]--------------------------------------------------------
-# -[User Management]------------------------------------------------------------
-# -[Trend Data]-----------------------------------------------------------------
 
 @admin_bp.route('/admin/trends/add', methods=["GET", "POST"])
 def trends_add():
@@ -67,14 +62,16 @@ def trends_add():
         if request.form:
             trend = Trends(
                 description=request.form.get("description"),
-                trend_type=request.form.get("trend_type"),
+                data_source=request.form.get("data_source"),
+                min_value=request.form.get("min_value"),
+                max_value=request.form.get("max_value"),
                 unit_of_measure=request.form.get("unit_of_measure")
             )
             db.session.add(trend)
             db.session.commit()
         trend_data = Trend_Data.query.all()
         return redirect("admin#tab-trend-management")
-    
+
 
 @admin_bp.route("/admin/trends/delete", methods=["GET", "POST"])
 def trends_delete():
@@ -85,11 +82,25 @@ def trends_delete():
     trends = Trends.query.all()
     return redirect("admin#tab-trend-management")
 
-            
-            
-# -[Event History]--------------------------------------------------------------
 
-# -[Database management]--------------------------------------------------------
+@admin_bp.route("/admin/trends/set_default/<trend_id>", methods=["GET", "POST"])
+def trends_set_default(trend_id=None):
+
+    ###disable_trends = Trends.query.all()
+    for row in Trends.query:  # all() is extra
+        row.default = False
+
+    trend = Trends.query.get(trend_id)
+    trend.default = True
+    db.session.add(trend)
+    db.session.commit()
+
+    ###trends = Trends.query.all()
+    return redirect("admin#tab-trend-management")
+
+# -[Event History]-------------------------------------------------------------
+
+# -[Database management]-------------------------------------------------------
 
 
 # Trends - id | type | description | unit
@@ -97,14 +108,33 @@ def trends_delete():
 @admin_bp.route('/admin/database/reset')
 def reset():
     conn = sqlite3.connect('acqua.db')
-    conn.execute('DROP TABLE IF EXISTS trend_types;')
-    conn.execute('CREATE TABLE trend_types (\
-        id INTEGER PRIMARY KEY, description TEXT);')
-    conn.execute('DROP TABLE IF EXISTS trends;')
-    conn.execute('CREATE TABLE trends (\
-        id INTEGER PRIMARY KEY, description TEXT(80), \
-        unit_of_measure TEXT(80), trend_type INT);')
-    conn.execute('DROP TABLE IF EXISTS trend_data;')
+    conn.execute('\
+        DROP TABLE IF EXISTS data_source\
+    ;')
+    conn.execute('\
+        CREATE TABLE data_source (\
+        id INTEGER PRIMARY KEY,\
+        description TEXT\
+    );')
+    conn.execute('\
+        DROP TABLE IF EXISTS trends\
+    ;')
+    conn.execute('\
+        CREATE TABLE trends (\
+            id INTEGER PRIMARY KEY,\
+            description TEXT(80),\
+            unit_of_measure TEXT(80),\
+            data_source INT,\
+            min_value REAL,\
+            max_value REAL,\
+            enabled BOOLEAN,\
+            default BOOLEAN,\
+            update_frequency INT\
+        );'
+    )
+    conn.execute('\
+        DROP TABLE IF EXISTS trend_data\
+    ;')
     conn.execute('\
         CREATE TABLE trend_data (\
         id INTEGER PRIMARY KEY, \
@@ -117,9 +147,10 @@ def reset():
         'admin.html', RELEASE=release, VERSION=version
     )
 
+
 @admin_bp.route('/admin/database')
 def database():
-        #  hello = request.args.get('hello') - how to decode extra arguments
-        return render_template(
-            'admin.html', RELEASE=release, VERSION=version
-        )
+    #  hello = request.args.get('hello') - how to decode extra arguments
+    return render_template(
+        'admin.html', RELEASE=release, VERSION=version
+    )

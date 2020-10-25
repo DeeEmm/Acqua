@@ -20,4 +20,3 @@ def bad_request(self):
 @app.errorhandler(500)
 def server_error(self):
 	return render_template("error.html", ERROR_CODE='500', RELEASE=release, VERSION=version), 500
-			

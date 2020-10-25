@@ -1,3 +1,11 @@
+- Version 1.0-Alpha Build V1.0.20102501 
+	- Changed database structure
+	- Added additional fields to trend tables
+	- Added min / max lines to trend chart
+	- Added 'default' trend chart setting
+	- Added ability to manually create trend data entries from front end
+	- Added ability to delete trend data entries by selecting line in data table 
+
 - Version 1.0-Alpha Build V1.0.20102301 
 	- Formatted date on chart
 	- Populate datagrid and chart with data when trend in list clicked #4
@@ -18,7 +26,6 @@
 	- Created basic CRUD functionality (add / delete trends)
 	- Added Changelog file
 	- Learned Flask-Blueprint scope by banging head repeatedly against keyboard
-	
+
 - Version 1.0-Alpha Build V1.0.20101701
 	- Initial version
-	- Basic working flask navigation structure 

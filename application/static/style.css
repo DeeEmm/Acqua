@@ -171,6 +171,40 @@ li.list.striped {
 
 
 
+/**************************
+ * Popover forms
+ */
+
+.popover {
+  width: 304px !important;
+  max-width: 100% !important;
+}
+
+.popover.fade.bottom.in {
+  width: 304px !important;
+  max-width: 100% !important;
+}
+
+#add_value_popover_form{
+  width: 300px;
+}
+
+#add_value_button {
+  
+}
+
+
+
+/**************************
+ * datatable
+ */
+
+
+td.highlight {
+  background-color: whitesmoke !important;
+}
+
+
 
 /**************************
  * Footer

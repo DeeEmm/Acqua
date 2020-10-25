@@ -24,16 +24,9 @@ Modal Dialog to add trends
 				{% for trend in trends %}
 					<li class="list">	
 						<span data-feather="home"></span>
-						<a class="nav-link" href="/showtrend/{{trend.id}}">
+						<a class="nav-link" href="/trend/{{trend.id}}">
 					    	{{trend.description}} <small>( {{trend.unit_of_measure}} ) </small> 
 						</a>
-						<!--
-						<form method="POST" action="{{url_for('trends_bp.add_data')}}" style="float:right;">
-							<input type="hidden" value="{{trend.id}}" name="trend_id">
-							<input type="text" name="value">
-						  <button><input type="submit" data-feather="plus-circle" value='Add Data'></button>
-						</form>
-						-->
 					</li>	
 				{% endfor %}				  
 			</ul>
@@ -50,20 +43,37 @@ Modal Dialog to add trends
 		  </div>
 	
 
-		  <!-- Chart -->
-
+		  <!-- The Chart -->
 
 		  <canvas class="my-4 w-100" id="trendChart" width="900" height="380"></canvas>
 	
 	
-	
-		  <!--Start of data section -->
+		<!-- Forms and buttons -->
+		
+		<button id="add_value_button" data-toggle="modal" type="button" class="btn btn-lg btn-default" data-toggle="popover" data-placement="bottom" data-title="Add Data Value" data-container="body" data-html="true">Add Value</button>
+		<button id="delete_row_button" type="button" class="btn btn-lg btn-default" data-toggle="popover" data-placement="bottom" data-title="Add Data Value" data-container="body" data-html="true">Delete Row</button>
+		<button id="edit_row_button" type="button" class="btn btn-lg btn-default" data-placement="bottom" data-title="Edit Data Value" data-container="body" data-html="true">Edit Row</button>
+		<br  />
+		<br  />
+		
+		<div id="add_value_popover_form" class="hide">
+			<form id="myform" class="form-inline" role="form" method="POST" action="/trends/add_value/{{active_trend_id}}">
+				<input id="form_value" name="value" type="text" placeholder="{{trend_name}}" class="form-control" tabindex="777">
+				<button id="form_button" type="submit" class="btn">Add Value</button>
+			</form>
+		</div>
+		
+		<div id="delete_value_popover_form" class="hide">
+			<form id="myform" class="form-inline" role="form" method="POST" action="/trends/add_value/{{active_trend_id}}">
+				<input id="form_value" name="value" type="text" placeholder="{{trend_name}}" class="form-control" tabindex="777">
+				<button id="form_button" type="submit" class="btn">Add Value</button>
+			</form>
+		</div>
 
-
-
 	
 	
-		  <h2>Data</h2>
+		  <!-- Start of data section -->
+		  
 		  <div class="table table-responsive">			  
 			<table id="dataTable" class="table table-striped table-sm">
 			  <thead>
@@ -76,12 +86,12 @@ Modal Dialog to add trends
 			  </thead>
 			  <tbody>
 				{% for trend_entry in trend_data %}
-						<tr>
-							<td>{{trend_entry.id}}</td>
-							<td>{{trend_entry.trend_id}}</td>
-							<td>{{trend_entry.timestamp}}</td>
-							<td>{{trend_entry.value}}</td>
-						</tr>
+					<tr>
+						<td>{{trend_entry.id}}</td>
+						<td>{{trend_entry.trend_id}}</td>
+						<td>{{trend_entry.timestamp}}</td>
+						<td>{{trend_entry.value}}</td>
+					</tr>
 				{% endfor %}				  
   
 				  
@@ -96,27 +106,123 @@ Modal Dialog to add trends
 	{% block javascript %}
 
 	<!-- General libraries -->
-	<script>window.jQuery || document.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"><\/script>')</script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script src="{{url_for('trends_bp.static', filename='bootstrap.bundle.min.js')}}"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.9.0/feather.min.js"></script>
 
-	<!-- Data table -->
-	<!-- https://datatables.net/ -->
-	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.22/datatables.css"/>	 
-	<script type="text/javascript" src="https://cdn.datatables.net/v/bs/dt-1.10.22/datatables.js"></script>
 	<script>
-	$(document).ready( function () {
-		$.noConflict();
-		  $('#dataTable').DataTable();
-		} );  
+		function sleep(milliseconds) {
+			  const date = Date.now();
+			  let currentDate = null;
+			  do {
+				currentDate = Date.now();
+			  } while (currentDate - date < milliseconds);
+			}
 	</script>
+
+	<!-- Popover forms -->
+	<script type="text/javascript">
+	$(function(){
+		$("#add_value_button").popover({
+			title: '<h4>Add a manual entry</h4>',
+			placement: 'bottom',
+			html: true, 
+			content:  $('#add_value_popover_form').html()
+		});	
+	})
+	
+	//
+	// $(document).ready(function(){
+	// 	$("#add_value_button").on('shown.bs.popover', function(){
+	// 		document.getElementById("add_value_button").blur();
+	// 	}).on('shown.bs.popover', function(){
+	// 		//alert("blah"); 
+	// 		// $('#add_value_button').blur();
+	// 		// $('#add_value_popover_form').blur();
+	// 		// $('#form_value').focus();
+	// 		// document.getElementById('form_value').focus(); 
+	// 		$('.selector').tabs(".form-inline", "active", 777)
+	// 	});
+	// });
+
+
+		//the code works but $('#form_value').focus(); does not give input focus
+	// $(document).ready(function(){
+	// 	$("#add_value_button").on('shown.bs.popover', function(){
+	// 		$('#add_value_button').blur();
+	// 		$('#add_value_popover_form').blur();
+	// 		
+	// 		setTimeout(function(){				
+	// 			$('#form_value').blur();				
+	// 			$('#form_value').focus();				
+	// 		},500);
+	// 	
+	// 	});
+	// });
+
+
+
+	</script>
+
+
+
+
 
 
 	  
 	<!-- Chart Library: https://www.chartjs.org/docs/latest/ -->
 	<!-- Data table import adapted from: https://css-tricks.com/the-many-ways-of-getting-data-into-charts/ -->
+	<!-- Horizontal lines adapted from: https://riptutorial.com/chart-js/example/22333/draw-horizonal-lines -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
 	<script>
+	
+	var horizonalLinePlugin = {
+		  afterDraw: function(chartInstance) {
+			var yScale = chartInstance.scales["y-axis-0"];
+			var canvas = chartInstance.chart;
+			var ctx = canvas.ctx;
+			var index;
+			var line;
+			var style;
+		
+			if (chartInstance.options.horizontalLine) {
+			  for (index = 0; index < chartInstance.options.horizontalLine.length; index++) {
+				line = chartInstance.options.horizontalLine[index];
+		
+				if (!line.style) {
+				  style = "rgba(255,0,0, .5)";
+				} else {
+				  style = line.style;
+				}
+		
+				if (line.y) {
+				  yValue = yScale.getPixelForValue(line.y);
+				} else {
+				  yValue = 0;
+				}
+		
+				ctx.lineWidth = 3;
+		
+				if (yValue) {
+				  ctx.beginPath();
+				  ctx.moveTo(0, yValue);
+				  ctx.lineTo(canvas.width, yValue);
+				  ctx.strokeStyle = style;
+				  ctx.stroke();
+				}
+		
+				if (line.text) {
+				  ctx.fillStyle = style;
+				  ctx.fillText(line.text, 0, yValue + ctx.lineWidth);
+				}
+			  }
+			  return;
+			};
+		  }
+		};
+		Chart.pluginService.register(horizonalLinePlugin);
+	
+	
 	
 		function BuildChart(labels, values) {
 		  var ctx = document.getElementById("trendChart");
@@ -130,7 +236,15 @@ Modal Dialog to add trends
 			  }]
 			},
 			options: {
-				fill: false
+				"horizontalLine": [{
+					  "y": {{max_value}},
+					  "style": "rgba(0, 255, 0, .5)",
+					  "text": "MAX"
+					}, {
+					  "y": {{min_value}},
+					  "style": "rgba(0, 255, 0, .5)",
+					  "text": "MIN"
+					}]
 			}
 		  });
 		  return myChart;
@@ -139,11 +253,12 @@ Modal Dialog to add trends
 		var table = document.getElementById("dataTable");
 		var json = []; // First row needs to be headers 
 		var headers =[];
+		
 		for (var i = 0; i < table.rows[0].cells.length; i++) {
 		  headers[i] = table.rows[0].cells[i].innerHTML.toLowerCase().replace(/ /gi, '');
 		}
 		
-		// Go through cells 
+		// Recurse cells 
 		for (var i = 1; i < table.rows.length; i++) {
 		  var tableRow = table.rows[i];
 		  var rowData = {};
@@ -167,20 +282,63 @@ Modal Dialog to add trends
 		  return e.value;
 		});
 		console.log(values); // ["10", "25", "55", "120"]
-		
+
 		var chart = BuildChart(labels, values);
 	
-
 	</script> 
 	
 	
 	
-
+	<!-- Data table -->
+	<!-- https://datatables.net/ -->
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.22/datatables.css"/>	 
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.3.1/css/select.dataTables.min.css"/>
+	<script type="text/javascript" src="https://cdn.datatables.net/v/bs/dt-1.10.22/datatables.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/select/1.3.1/js/dataTables.select.min.js"></script>
+	
+	<script>
+	
+	$(document).ready(function() {
+		$('#dataTable').DataTable( {
+			select:         true
+		} );
+	} );
+	
+	var table = $('#dataTable').DataTable();
+ 
+	//Row selection toggle
+	$('#dataTable tbody').on( 'click', 'tr', function () {
+		if ( $(this).hasClass('selected') ) {
+			$(this).removeClass('selected');
+		}
+		else {
+			table.$('tr.selected').removeClass('selected');
+			$(this).addClass('selected');
+		}
+	} );
+	
+			
+	// Delete row function
+	$('#edit_row_button').click( function () {		
+		var	rowid = table.row('.selected').data()[0];
+		var navURL = '/trends/edit_value/' + rowid;
+		window.location.replace(navURL);
+		table.row('.selected').remove().draw( false );
+	
+	} );
+		
+	
+	// Delete row function
+	$('#delete_row_button').click( function () {		
+		var	rowid = table.row('.selected').data()[0];
+		var navURL = '/trends/delete_value/' + rowid;
+		window.location.replace(navURL);
+		table.row('.selected').remove().draw( false );
+	
+	} );
 	
 
-	
-	
-	
+</script>	
 	
 	{%- endblock %}
 

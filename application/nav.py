@@ -32,5 +32,4 @@ class CustomRenderer(BootstrapRenderer):
         nav_tag['class'] += 'navbar navbar-inverse navbar-fixed-top'
         return nav_tag
 
-     
 register_renderer(app, 'custom', CustomRenderer)

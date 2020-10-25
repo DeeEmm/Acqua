@@ -1,3 +1,13 @@
 {% block conditional_control %}
 	<h2>Conditional Control</h2>
+	<p>
+		If value = | > | < | != than limit then do action<br  />
+		Can be either polled on cyclic check triggered by CRON or can be fired from interrupt / high frequency check<br  />
+		Need to differentiate between two as interrupts have high overheads<br  />
+		<br  />
+		Advanced If / then actions also include other conditional results, this way conditional arguments can be constructed with complex criteria<br  />
+		Values can  be compared to other values<br  />
+		<br  />
+		Inputs can be sensors (nodes) / GPIO / Time (CRON) / Cycle counts (count up / count down)
+	</p>
 {%- endblock %}

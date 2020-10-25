@@ -1,4 +1,24 @@
 {% block general %}
 	<h2>General Settings</h2>
-	<p>The admin page contains ALL of configuration parameters. If it needs to be set up or configured, it'll be in here</p>
+	<p>
+		General settings<br  />
+		- Interface settings<br  />
+		- Display format<br  />
+		
+		Reboot System
+		
+		- import os
+		- os.system(‘sudo shutdown now’)
+		
+		<button class="btn btn-danger" onclick="window.location.href='{{ url_for( 'admin_bp.database', action='reset') }}';">RESTART</button>
+		
+		
+		Run on startup
+		
+		- @reboot sh /home/acqua/start.sh >/var/log/acqua.log 2>&1
+		
+		
+		
+	</p>
+
 {%- endblock %}

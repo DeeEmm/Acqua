@@ -8,7 +8,7 @@
 cd /home/acqua
 
 # Lets install dependencies by default to pick up any changes
-pip install -r requirements.txt
+# pip install -r requirements.txt
 
 # where's our configuration file?
 export APP_CONFIG_FILE=config.py

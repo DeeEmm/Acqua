@@ -29,42 +29,53 @@ trends_bp = Blueprint(
 )
 
 
-@trends_bp.route('/showtrend/<active_trend_id>')
-def showtrend(active_trend_id=None):
+@trends_bp.route('/trend/<active_trend_id>')
+def showtrend(active_trend_id):
+
+    active_trend = Trends.query.filter_by(id=active_trend_id).first()
+    trend_name = active_trend.description
+    min_value = active_trend.min_value
+    max_value = active_trend.max_value
+    trends = Trends.query.all()
+    trend_data = Trend_Data.query.filter_by(trend_id=active_trend_id).all()
+
+    return render_template(
+        "trends.html",
+        trends=trends,
+        trend_data=trend_data,
+        trend_name=trend_name,
+        release=release,
+        version=version,
+        max_value=max_value,
+        min_value=min_value,
+        active_trend_id=active_trend_id
+    )
+
+
+@trends_bp.route('/trends/')
+def trends():
+
+    default_trend = Trends.query.filter_by(default=True).first()
+    active_trend_id = default_trend.id
+    trend_name = default_trend.description
+    min_value = default_trend.min_value
+    max_value = default_trend.max_value
 
     trends = Trends.query.all()
-    trend_name = trends[int(active_trend_id)-1].description
-
     trend_data = Trend_Data.query.filter_by(trend_id=active_trend_id).all()
-        
-    return render_template("trends.html", trends=trends, trend_data=trend_data, trend_name=trend_name, release=release, version=version)
 
+    return render_template(
+        "trends.html",
+        trends=trends,
+        trend_data=trend_data,
+        trend_name=trend_name,
+        release=release,
+        version=version,
+        max_value=max_value,
+        min_value=min_value,
+        active_trend_id=active_trend_id
+    )
 
-
-@trends_bp.route('/trends', methods=["GET", "POST"])
-def trends():
-    with app.app_context():
-        if request.form:
-            trend = Trends(
-                description=request.form.get("description"),
-                trend_type=request.form.get("trend_type"),
-                unit_of_measure=request.form.get("unit_of_measure")
-            )
-            db.session.add(trend)
-            db.session.commit()
-
-
-        trends = Trends.query.all()
-#         trend_data = session.query(Trend_Data).filter(Trend_Data.trend_id == trend_id).all()
-        trend_data = Trend_Data.query.all()
-#        trend_data = Trend_Data.query\
-#        .join(Trends, Trend_Data.id==Trends.id)\
-#        .add_columns(Trend_Data.trend_id, Trend_Data.timestamp, Trend_Data.value, Trends.unit_of_measure, Trends.trend_type)\
-#        .filter(Trend_Data.id == Trends.id)\
-
-    return render_template("trends.html", trends=trends, trend_data=trend_data, release=release, version=version)
-        
-                
 @trends_bp.route("/trends/update", methods=["POST"])
 def update():
     with app.app_context():
@@ -77,34 +88,38 @@ def update():
         /trends", trends=trends, release=release, version=version)
 
 
-@trends_bp.route("/trends/delete", methods=["GET", "POST"])
-def delete():
-    description = request.form.get("description")
-    trend = Trends.query.filter_by(description=description).first()
-    db.session.delete(trend)
+@trends_bp.route("/trends/delete_value/<value_id>", methods=["GET", "POST"])
+def delete(value_id):
+
+    active_trend = Trend_Data.query.filter_by(id=value_id).all()
+    active_trend_id = active_trend[0].trend_id
+
+    trend_data = Trend_Data.query.filter_by(id=value_id).first()
+    db.session.delete(trend_data)
     db.session.commit()
-    trends = Trends.query.all()
-    return redirect("/trends", trends=trends, release=release, version=version)
+    trend_data = Trend_Data.query.all()
+    return redirect(
+        "/trend/" +  str(active_trend_id)
+    )
 
 
-@trends_bp.route("/trends/add_data", methods=["GET", "POST"])
-def add_data():
+@trends_bp.route("/trends/add_value/<active_trend_id>", methods=["GET", "POST"])
+def add_data(active_trend_id=None):
+    id=active_trend_id
     with app.app_context():
         if request.form:
             trend_data=Trend_Data(
                 timestamp=func.now(),
                 id=None,
-                trend_id=request.form.get("trend_id"),
+                trend_id=active_trend_id,
                 value=request.form.get("value")
             )
             db.session.add(trend_data)
             db.session.commit()
             trends = Trends.query.all()
             trend_data =Trend_Data.query.all()
-#            trend_data = Trend_Data.query\
-#            .join(Trend_Data, Trends.id==Trend_Data.id)\
-#            .add_columns(Trend_Data.trend_id, Trend_Data.timestamp, Trend_Data.value, Trends.unit_of_measure, Trends.trend_type)\
-#            .filter(Trend_Data.id == Trends.id)\
 
-            return render_template("trends.html", trends=trends,
-            trend_data=trend_data, release=release, version=version)
+            return redirect(
+                "trend/" + id
+            )
+
