@@ -1,3 +1,7 @@
+- Version 1.0-Alpha Build V1.0.20102702 
+	- Added Admin overview page
+	- Added shutdown and reboot functions
+
 - Version 1.0-Alpha Build V1.0.20102601 
 	- Added edit button / function to trends
 

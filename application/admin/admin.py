@@ -33,6 +33,8 @@ admin_bp = Blueprint(
     static_folder='static'
 )
 
+# authentication needed
+
 
 @admin_bp.route('/admin')
 def admin():
@@ -45,7 +47,34 @@ def admin():
         trends=trends, trend_data=trend_data
     )
 
+# -[Admin Overview]------------------------------------------------------------
+
 # -[General Settings]----------------------------------------------------------
+
+# Example -  shell in file and get results
+# https://stackoverflow.com/questions/53380988/how-to-execute-shell-script-from-flask-app
+
+
+@admin_bp.route('/admin/general/shutdown')
+def general_shutdown():
+    command = "/usr/bin/sudo /sbin/shutdown -h now"
+    import subprocess
+    process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
+    output = process.communicate()[0]
+    # print(output)
+    return render_template('shutdown.html')
+
+
+@admin_bp.route('/admin/general/reboot')
+def general_reboot():
+    command = "/usr/bin/sudo reboot now"
+    import subprocess
+    process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
+    output = process.communicate()[0]
+    # print(output)
+    # print('rebooting...')
+    return redirect("admin#tab-general-settings")
+
 # -[Communication]-------------------------------------------------------------
 # -[Nodes]---------------------------------------------------------------------
 # -[GPIO]----------------------------------------------------------------------

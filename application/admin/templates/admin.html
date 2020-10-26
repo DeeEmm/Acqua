@@ -14,9 +14,15 @@
 		<nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar">
 		  <div class="nav flex-column natab" id="tab-tab" role="tablist" aria-orientation="vertical"">
 			<ul class="nav flex-column">
-			  <li class="nav-item">
-				<a class="nav-link" href="#tab-general-settings" data-toggle="pill" >
+			<li class="nav-item">
+				<a class="nav-link" href="#tab-overview" data-toggle="pill" >
 				  <span data-feather="home"></span>
+				  Admin Overview
+				</a>
+			  </li>
+			<li class="nav-item">
+				<a class="nav-link" href="#tab-general-settings" data-toggle="pill" >
+				  <span data-feather="general"></span>
 				  General Settings
 				</a>
 			  </li>
@@ -88,10 +94,14 @@
 		  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
 			<div class="col-9">
 				<div class="tab-content" id="tab-tabContent">
-					<div class="tab-pane active" id="tab-general-settings" role="tabpanel" aria-labelledby="tab-general-settings">
-						{% block general %}{% include 'includes/general.html' %}{%- endblock %}						
+					<div class="tab-pane active" id="tab-overview" role="tabpanel" aria-labelledby="tab-overview">
+						{% block overview %}{% include 'includes/overview.html' %}{%- endblock %}						
 					</div>
 					
+					<div class="tab-pane fade" id="tab-general-settings" role="tabpanel" aria-labelledby="tab-general-settings">
+						{% block general %}{% include 'includes/general.html' %}{%- endblock %}						
+					</div>
+
 					<div class="tab-pane fade" id="tab-communication" role="tabpanel" aria-labelledby="ctab-communication">
 						{% block communication %}{% include 'includes/communication.html' %}{%- endblock %}						
 					</div>
