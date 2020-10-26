@@ -76,16 +76,15 @@ def trends():
         active_trend_id=active_trend_id
     )
 
-@trends_bp.route("/trends/update", methods=["POST"])
-def update():
+@trends_bp.route("/trends/edit_value/<trend_id>", methods=["POST"])
+def update(trend_id):
     with app.app_context():
-        newdescription = request.form.get("newdescription")
-        olddescription = request.form.get("olddescription")
-        trend = Trends.query.filter_by(description=olddescription).first()
-        trend.description = newdescription
+        edited_trend_value = request.form.get("edit_value")
+        edited_trend_id = request.form.get("edit_id")
+        trend = Trend_Data.query.filter_by(id=edited_trend_id).first()
+        trend.value = edited_trend_value
         db.session.commit()
-        return redirect("\
-        /trends", trends=trends, release=release, version=version)
+        return redirect("/trend/" + trend_id)
 
 
 @trends_bp.route("/trends/delete_value/<value_id>", methods=["GET", "POST"])

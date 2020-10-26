@@ -52,21 +52,29 @@ Modal Dialog to add trends
 		
 		<button id="add_value_button" data-toggle="modal" type="button" class="btn btn-lg btn-default" data-toggle="popover" data-placement="bottom" data-title="Add Data Value" data-container="body" data-html="true">Add Value</button>
 		<button id="delete_row_button" type="button" class="btn btn-lg btn-default" data-toggle="popover" data-placement="bottom" data-title="Add Data Value" data-container="body" data-html="true">Delete Row</button>
-		<button id="edit_row_button" type="button" class="btn btn-lg btn-default" data-placement="bottom" data-title="Edit Data Value" data-container="body" data-html="true">Edit Row</button>
+		<button id="edit_row_button" data-toggle="modal" type="button" class="btn btn-lg btn-default" data-toggle="popover" data-placement="bottom" data-title="Add Data Value" data-container="body" data-html="true">Edit Value</button>
 		<br  />
 		<br  />
 		
 		<div id="add_value_popover_form" class="hide">
 			<form id="myform" class="form-inline" role="form" method="POST" action="/trends/add_value/{{active_trend_id}}">
-				<input id="form_value" name="value" type="text" placeholder="{{trend_name}}" class="form-control" tabindex="777">
-				<button id="form_button" type="submit" class="btn">Add Value</button>
+				<input id="add_text_box" name="value" type="text" placeholder="{{trend_name}}" class="form-control" tabindex="777">
+				<button id="add_form_button" type="submit" class="btn">Add Value</button>
 			</form>
 		</div>
 		
+		<div id="edit_value_popover_form" class="hide">
+			<form id="myform" class="form-inline" role="form" method="POST" action="/trends/edit_value/{{active_trend_id}}">
+				<input id="edit_id" name="edit_id" type="hidden" class="form-control" value="">
+				<input id="edit_text_box" name="edit_value" type="text" placeholder="{{trend_name}}" class="form-control" value="">
+				<button id="edit_row_button" type="submit" class="btn">Submit</button>
+			</form>
+		</div>
+
 		<div id="delete_value_popover_form" class="hide">
 			<form id="myform" class="form-inline" role="form" method="POST" action="/trends/add_value/{{active_trend_id}}">
-				<input id="form_value" name="value" type="text" placeholder="{{trend_name}}" class="form-control" tabindex="777">
-				<button id="form_button" type="submit" class="btn">Add Value</button>
+				<input id="delete_text_box" name="delete_value" type="text" placeholder="{{trend_name}}" class="form-control" tabindex="777">
+				<button id="delete_form_button" type="submit" class="btn">Add Value</button>
 			</form>
 		</div>
 
@@ -119,6 +127,8 @@ Modal Dialog to add trends
 			  } while (currentDate - date < milliseconds);
 			}
 	</script>
+	
+	
 
 	<!-- Popover forms -->
 	<script type="text/javascript">
@@ -131,6 +141,23 @@ Modal Dialog to add trends
 		});	
 	})
 	
+	$(function(){
+		$("#edit_row_button").popover({
+			title: '<h4>Edit Data</h4>',
+			placement: 'bottom',
+			html: true, 
+			sanitize: false,
+			content: function () {
+				return $('#edit_value_popover_form').html()
+			}
+		}).on('show.bs.popover', function() {
+			var	rowid = table.row('.selected').data()[0];
+			var	trend_val = table.row('.selected').data()[3];
+			$('#edit_text_box').attr('value', trend_val).clone()			
+			$('#edit_id').attr('value', rowid).clone()			
+		});	
+	})
+
 	//
 	// $(document).ready(function(){
 	// 	$("#add_value_button").on('shown.bs.popover', function(){
@@ -298,11 +325,14 @@ Modal Dialog to add trends
 	
 	<script>
 	
-	$(document).ready(function() {
-		$('#dataTable').DataTable( {
-			select:         true
-		} );
-	} );
+	// $(document).ready(function() {
+	// 	$('#dataTable').DataTable( {
+	// 		select:         true
+	// 	} );
+	// } );
+	
+	
+
 	
 	var table = $('#dataTable').DataTable();
  
@@ -318,13 +348,9 @@ Modal Dialog to add trends
 	} );
 	
 			
-	// Delete row function
-	$('#edit_row_button').click( function () {		
-		var	rowid = table.row('.selected').data()[0];
-		var navURL = '/trends/edit_value/' + rowid;
-		window.location.replace(navURL);
-		table.row('.selected').remove().draw( false );
-	
+	// Edit cancel
+	$('#edit_cancel_button').click( function () {		
+//		$('#add_value_popover_form').popover('hide');
 	} );
 		
 	

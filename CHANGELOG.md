@@ -1,3 +1,6 @@
+- Version 1.0-Alpha Build V1.0.20102601 
+	- Added edit button / function to trends
+
 - Version 1.0-Alpha Build V1.0.20102501 
 	- Changed database structure
 	- Added additional fields to trend tables
