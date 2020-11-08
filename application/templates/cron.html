@@ -1,0 +1,16 @@
+{%- extends "layout.html" %}
+{% import "bootstrap/utils.html" as utils %}
+
+{% block title %}CRON Executed!{% endblock %}
+
+{% block main %}
+  {{ super() }}
+  <div class="container">
+	  <div class="jumbotron">
+		<h1>CRON Executed</h1>
+		<p>CRON Results:</p>
+		<p>Trends: {{trends_cron}}</p>
+		<p>Control: {{control_cron}}</p>
+		</div>
+  </div>
+{%- endblock %}

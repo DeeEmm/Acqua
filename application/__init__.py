@@ -3,7 +3,7 @@ from flask_bootstrap import Bootstrap
 
 def create_app():
     app = Flask(__name__, instance_relative_config=False)
-    app.config.from_envvar('APP_CONFIG_FILE')
+    app.config.from_pyfile('config.py')
 
     # Initialise Plugins
     bootstrap = Bootstrap(app)
@@ -12,17 +12,21 @@ def create_app():
 
         # Include our Routes
         from . import routes
+        from . import cron
         from . import nav
 
         # from .profile import profile
         from .home import home
         from .trends import trends
+        from .nodes import nodes
         from .control import control
         from .admin import admin
 
         # Register Blueprints
+        app.register_blueprint(cron.cron_bp)
         app.register_blueprint(home.home_bp)
         app.register_blueprint(trends.trends_bp)
+        app.register_blueprint(nodes.nodes_bp)
         app.register_blueprint(admin.admin_bp)
         app.register_blueprint(control.control_bp)
 

@@ -7,7 +7,8 @@
 
 cd /home/acqua
 
-# Lets install dependencies by default to pick up any changes
+# Lets install dependencies by default to pick up any changes 
+# (uncomment for distribution)
 # pip install -r requirements.txt
 
 # where's our configuration file?

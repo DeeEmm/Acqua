@@ -1,9 +1,44 @@
 {% block nodes %}
-	<h2>Nodes</h2>
+	<h2>I2C Nodes</h2>
 	<p>
-		Search for available nodes<br>
-		create node list<br>
-		identify nodes in list that have already been paired<br>
-		provide method by which unpaired nodes can be paired (address stored with Description)
+		Assign human readable names to I2C nodes.
 	</p>
+	<h3>Assigned Nodes</h3>
+	<ul class="nav flex-column list-group list-group-hover list-group-striped">
+
+	{% if nodes %}
+
+		{% for node in nodes %}
+			<li class="list striped">	
+				<p>
+					<form method="POST" action="{{url_for('admin_bp.nodes_delete')}}" style="float:right;">
+						  <input type="hidden" value="{{node.description}}" name="description">
+						  <input type="submit" data-feather="minus-circle" value='Delete'>
+					</form>
+					<strong> {{node.description}}</strong> <small>( {{node.i2c_address}} ) </small> 
+				</p>
+				<br />
+			</li>	
+		{% endfor %}
+	{% else %}
+		<p>No Nodes Assigned.</p>
+		<p>Use the 'Add Node' form below to assign a node.</p>		
+	{% endif %}
+				
+	</ul>
+	
+	
+	<h3>Add a Node</h3>
+	<hr  />
+	<form method="POST" action="/admin/nodes/add">
+		Description <input type="text" name="description" title="Description for the node" data-toggle="tooltip">&nbsp;&nbsp;		
+		Node Address <select name="i2c_address" title="Available I2C nodes"> &nbsp;&nbsp;
+			{% for i2c_address in i2c_address_list %}
+				<option value="{{i2c_address}}">{{i2c_address}}</option>
+			{% endfor %}
+		</select>
+		<input type="submit" value="Add" style="float:right">
+	</form>
+	
+	
 {%- endblock %}

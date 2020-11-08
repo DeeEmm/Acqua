@@ -3,7 +3,6 @@ from flask import current_app as app
 from flask import redirect, url_for
 import sqlite3
 
-
 from flask import Flask
 # from flask.ext.sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import select
@@ -17,9 +16,18 @@ from flask import redirect
 from markupsafe import escape
 # from datetime import datetime
 
+
 from application.trends.models import db
 from application.trends.models import Trends
 from application.trends.models import Trend_Data
+
+
+from application.nodes.models import db
+from application.nodes.models import Nodes
+
+from application.nodes import nodes
+i2c_address_list = nodes.i2c_address_list()
+
 
 release = app.config["RELEASE"]
 version = app.config["VERSION"]
@@ -41,10 +49,12 @@ def admin():
 
     trends = Trends.query.all()
     trend_data = Trend_Data.query.all()
+    nodes = Nodes.query.all()
 
     return render_template(
         'admin.html', release=release, version=version,
-        trends=trends, trend_data=trend_data
+        trends=trends, trend_data=trend_data,
+        i2c_address_list = i2c_address_list, nodes=nodes
     )
 
 # -[Admin Overview]------------------------------------------------------------
@@ -77,6 +87,29 @@ def general_reboot():
 
 # -[Communication]-------------------------------------------------------------
 # -[Nodes]---------------------------------------------------------------------
+
+@admin_bp.route('/admin/nodes/add', methods=["GET", "POST"])
+def nodes_add():
+    with app.app_context():
+        if request.form:
+            node = Nodes(
+                description=request.form.get("description"),
+                i2c_address=request.form.get("i2c_address"),
+            )
+            db.session.add(node)
+            db.session.commit()
+        return redirect("admin#tab-node-configuration")
+
+
+@admin_bp.route("/admin/nodes/delete", methods=["GET", "POST"])
+def nodes_delete():
+    description = request.form.get("description")
+    node = Nodes.query.filter_by(description=description).first()
+    db.session.delete(node)
+    db.session.commit()
+    return redirect("admin#tab-node-configuration")
+
+
 # -[GPIO]----------------------------------------------------------------------
 # -[Control Schema]------------------------------------------------------------
 # -[CRON Tasks]----------------------------------------------------------------
@@ -98,7 +131,6 @@ def trends_add():
             )
             db.session.add(trend)
             db.session.commit()
-        trend_data = Trend_Data.query.all()
         return redirect("admin#tab-trend-management")
 
 
@@ -108,7 +140,6 @@ def trends_delete():
     trend = Trends.query.filter_by(description=description).first()
     db.session.delete(trend)
     db.session.commit()
-    trends = Trends.query.all()
     return redirect("admin#tab-trend-management")
 
 
@@ -124,7 +155,6 @@ def trends_set_default(trend_id=None):
     db.session.add(trend)
     db.session.commit()
 
-    ###trends = Trends.query.all()
     return redirect("admin#tab-trend-management")
 
 # -[Event History]-------------------------------------------------------------
@@ -159,8 +189,7 @@ def reset():
             enabled BOOLEAN,\
             default BOOLEAN,\
             update_frequency INT\
-        );'
-    )
+        );')
     conn.execute('\
         DROP TABLE IF EXISTS trend_data\
     ;')
@@ -170,6 +199,15 @@ def reset():
         trend_id INT,\
         timestamp TEXT(80), \
         value REAL);')
+    conn.execute('\
+        DROP TABLE IF EXISTS nodes\
+        ;')
+    conn.execute('\
+        CREATE TABLE nodes (\
+            id INTEGER PRIMARY KEY,\
+            description TEXT(80),\
+            i2c_address INT\
+        );')
     conn.close()
 #    return redirect(url_for('admin_bp.admin'))   # just a test
     return render_template(
@@ -181,5 +219,5 @@ def reset():
 def database():
     #  hello = request.args.get('hello') - how to decode extra arguments
     return render_template(
-        'admin.html', RELEASE=release, VERSION=version
+        'admin.html', release=release, version=version
     )

@@ -2,3 +2,5 @@ flask-bootstrap
 flask-nav
 sqlalchemy 
 flask-sqlalchemy
+python-crontab
+smbus2

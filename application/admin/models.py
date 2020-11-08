@@ -52,28 +52,3 @@ app.config["SQLALCHEMY_DATABASE_URI"] = database_file
 
 db = SQLAlchemy(app)
 
-
-# Trends - id | type | description | unit
-class trends(db.Model):
-    id = db.Column(db.String(80), unique=True, nullable=False, primary_key=True)
-    type = db.Column(db.String(80), unique=True, nullable=False, primary_key=True)
-    description = db.Column(db.String(80), unique=True, nullable=False, primary_key=True)
-    value = db.Column(db.String(80), unique=True, nullable=False, primary_key=True)
-    def __repr__(self):
-        return "<ID: {}>".format(self.id)
-        return "<Type: {}>".format(self.type)
-        return "<Description: {}>".format(self.description)
-        return "<Value: {}>".format(self.value)
-
-
-# Trend_data - id | trend_id | datetime | value
-class trend_data(db.Model):
-    id = db.Column(db.String(80), unique=True, nullable=False, primary_key=True)
-    trend_id = db.Column(db.String(80), unique=True, nullable=False, primary_key=True)
-    datetime = db.Column(db.String(80), unique=True, nullable=False, primary_key=True)
-    value = db.Column(db.String(80), unique=True, nullable=False, primary_key=True)
-    def __repr__(self):
-        return "<ID: {}>".format(self.id)
-        return "<Trend ID: {}>".format(self.trend_id)
-        return "<DateTime: {}>".format(self.datetime)
-        return "<Value: {}>".format(self.value)

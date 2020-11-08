@@ -29,6 +29,7 @@ trends_bp = Blueprint(
 )
 
 
+
 @trends_bp.route('/trend/<active_trend_id>')
 def showtrend(active_trend_id):
 
@@ -122,3 +123,23 @@ def add_data(active_trend_id=None):
                 "trend/" + id
             )
 
+
+def cron_tasks():
+    # Trends - CRON function - called from CRON.PY
+    # Interrogate Trend database table and generate list of trends/nodes to update (array of Trend IDs/nodes)
+    # time decode - do we need to do it now?
+    # read realtime clock and compare
+    # Is time decode part of SQL Query? SELECT WHERE timeofcall >= datetime('now', '-1 minutes')
+    # https://www.tutorialspoint.com/sqlite/sqlite_date_time.htm
+    # https://kimsereyblog.blogspot.com/2016/06/nice-features-and-tricks-with-sqlite.html
+    # should we just update all trends at set frequency? (1 min)
+    # Parse Trend list and read data from Nodes - save data to trend_data table
+    # [NOTE: Should this be in TRENDS!!!]
+    with app.app_context():
+        trend_data = Trend_Data.query.filter_by(id=1).first()
+        # get active trends from database
+        # create array of trends to be updated
+        # parse trend nodes and grab data
+        # record entries in trend_data
+        
+        return True

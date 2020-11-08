@@ -1,3 +1,8 @@
+- Version 1.0-Alpha Build V1.0.20110801
+	- Added I2C Search
+	- Added Node management
+	- Change config file reference
+
 - Version 1.0-Alpha Build V1.0.20102702 
 	- Added Admin overview page
 	- Added shutdown and reboot functions
