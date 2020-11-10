@@ -20,10 +20,8 @@ from flask_nav.elements import View
 # [NOTE: Should this be in CONTROL!!!]
 
 
-
-
-release = app.config["RELEASE"]
-version = app.config["VERSION"]
+RELEASE = app.config["RELEASE"]
+VERSION = app.config["VERSION"]
 
 
 # Blueprint Configuration
@@ -38,7 +36,7 @@ control_bp = Blueprint(
 @control_bp.route('/control')
 def control():
 	return render_template(
-		'control.html', release=release, version=version
+		'control.html', RELEASE=RELEASE, VERSION=VERSION
 	)
 	
 	

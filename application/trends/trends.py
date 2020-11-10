@@ -16,8 +16,8 @@ from application.trends.models import Trends
 from application.trends.models import Trend_Data
 from markupsafe import escape
 
-release = app.config["RELEASE"]
-version = app.config["VERSION"]
+RELEASE = app.config["RELEASE"]
+VERSION = app.config["VERSION"]
 
 # Blueprint Configuration
 trends_bp = Blueprint(
@@ -45,8 +45,8 @@ def showtrend(active_trend_id):
         trends=trends,
         trend_data=trend_data,
         trend_name=trend_name,
-        release=release,
-        version=version,
+        RELEASE=RELEASE,
+        VERSION=VERSION,
         max_value=max_value,
         min_value=min_value,
         active_trend_id=active_trend_id
@@ -70,8 +70,8 @@ def trends():
         trends=trends,
         trend_data=trend_data,
         trend_name=trend_name,
-        release=release,
-        version=version,
+        RELEASE=RELEASE,
+        VERSION=VERSION,
         max_value=max_value,
         min_value=min_value,
         active_trend_id=active_trend_id

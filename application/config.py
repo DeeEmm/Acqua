@@ -14,3 +14,6 @@ SQLALCHEMY_TRACK_MODIFICATIONS = False
 SQLALCHEMY_DATABASE_URI = 'sqlite:////home/acqua/acqua.db'
 # SQLALCHEMY_ECHO: # Prints db-related actions to console for debugging.
 # SQLALCHEMY_ENGINE_OPTIONS:
+
+I2C_ADDRESS = 0x80
+I2C_BUS = 0

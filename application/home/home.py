@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template
 from flask import current_app as app
 
-release = app.config["RELEASE"]
-version = app.config["VERSION"]
+RELEASE = app.config["RELEASE"]
+VERSION = app.config["VERSION"]
 
 
 # Blueprint Configuration
@@ -19,12 +19,12 @@ home_bp = Blueprint(
 @home_bp.route('/index')
 def home():
     return render_template(
-        'home.html', release=release, version=version
+        'home.html', RELEASE=RELEASE, VERSION=VERSION
     )
 
 
 @home_bp.route('/help')
 def help():
     return render_template(
-        'help.html', release=release, version=version
+        'help.html', RELEASE=RELEASE, VERSION=VERSION
     )

@@ -1,0 +1,67 @@
+{% block trend_management %}
+
+	<h2>Trend management</h2>
+	<hr  />
+	
+	<h3>Trends</h3>
+	<ul class="nav flex-column list-group list-group-hover list-group-striped">
+
+		{% for trend in trends %}
+			<li class="list striped">	
+				<p>
+					<form method="POST" action="/admin/trends/set_default/{{trend.id}}" style="float:right;">
+						  <input type="hidden" value="{{trend.id}}" name="id">
+						  <input type="submit" data-feather="minus-circle" value='Set Default'>
+					</form>
+					<form method="POST" action="{{url_for('admin_bp.trends_delete')}}" style="float:right;">
+						  <input type="hidden" value="{{trend.description}}" name="description">
+						  <input type="submit" data-feather="minus-circle" value='Delete'>
+					</form>
+					<strong> {{trend.description}}</strong> <small>( {{trend.unit_of_measure}} ) </small> 
+				</p>
+				<br />
+			</li>	
+		{% endfor %}		
+				
+	</ul>
+		
+		
+	<h3>Add Trend Value</h3>
+	<hr  />
+	<form method="POST" action="/admin/trends/add">
+		Description <input type="text" name="description" title="Description for the trend" data-toggle="tooltip">&nbsp;&nbsp;
+		Units <input type="text" name="unit_of_measure" title="standard unit of measurement"> &nbsp;&nbsp;
+		Min Limit <input type="text" name="min_value" title="minimum permissible level"> &nbsp;&nbsp;
+		Max Limit <input type="text" name="max_value" title="Maximum permissible level"> &nbsp;&nbsp;
+		<br  /><br  />
+		
+		Datasource <select name="data_source" title="Type of trend - possibly types are manual or automatic"> &nbsp;&nbsp;
+			<option value="0">Manual Entry</option>
+			<option value="4">List</option>
+			<option value="1">of</option>
+			<option value="2">data</option>
+			<option value="3">sources</option>
+		</select>				&nbsp;
+		Update Frequency <select name="update_frequency" title="How often automatic trends are polled"> &nbsp;&nbsp;
+			<option value="0">Never</option>
+			<option value="1">1m</option>
+			<option value="2">15m</option>
+			<option value="3">1h</option>
+			<option value="4">3h</option>
+			<option value="5">6h</option>
+			<option value="6">12h</option>
+			<option value="7">24h</option>
+			<option value="8">Custom Time [CRON]</option>
+			<option value="9">Conditional Control</option>
+		</select>
+		&nbsp;&nbsp;Enabled <input name="enabled" type="checkbox" />
+
+
+		<input type="submit" value="Add" style="float:right">
+	</form>
+				
+	<br  />
+	<br  />
+		
+		
+	{%- endblock %}

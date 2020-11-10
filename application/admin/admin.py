@@ -29,8 +29,8 @@ from application.nodes import nodes
 i2c_address_list = nodes.i2c_address_list()
 
 
-release = app.config["RELEASE"]
-version = app.config["VERSION"]
+RELEASE = app.config["RELEASE"]
+VERSION = app.config["VERSION"]
 
 
 # Blueprint Configuration
@@ -52,7 +52,7 @@ def admin():
     nodes = Nodes.query.all()
 
     return render_template(
-        'admin.html', release=release, version=version,
+        'admin.html', RELEASE=RELEASE, VERSION=VERSION,
         trends=trends, trend_data=trend_data,
         i2c_address_list = i2c_address_list, nodes=nodes
     )
@@ -211,7 +211,7 @@ def reset():
     conn.close()
 #    return redirect(url_for('admin_bp.admin'))   # just a test
     return render_template(
-        'admin.html', RELEASE=release, VERSION=version
+        'admin.html', RELEASE=RELEASE, VERSION=VERSION
     )
 
 
@@ -219,5 +219,5 @@ def reset():
 def database():
     #  hello = request.args.get('hello') - how to decode extra arguments
     return render_template(
-        'admin.html', release=release, version=version
+        'admin.html', RELEASE=RELEASE, VERSION=VERSION
     )

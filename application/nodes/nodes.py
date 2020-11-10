@@ -11,32 +11,62 @@ from flask import redirect
 from markupsafe import escape
 # from datetime import datetime
 
-from application.trends.models import db
-from application.trends.models import Trends
-from application.trends.models import Trend_Data
-from markupsafe import escape
+from application.nodes.models import db
+from application.nodes.models import Nodes
 
 import smbus2
+import time
 
-release = app.config["RELEASE"]
-version = app.config["VERSION"]
+
+from smbus2 import SMBus, i2c_msg, SMBusWrapper
+
+RELEASE = app.config["RELEASE"]
+VERSION = app.config["VERSION"]
+I2C_BUS = app.config["I2C_BUS"]
 
 # Blueprint Configuration
 nodes_bp = Blueprint(
     'nodes_bp',
     __name__,
-    template_folder='template',
+    template_folder='templates',
     static_folder='static',
     static_url_path='/nodes'
 )
 
+
+@nodes_bp.route('/nodes/test')
+def nodes():
+    data = ''
+    data_length = 10
+    node_address = int(0x38) # decimal: 56
+    
+    request = {0x33};
+
+    # Single transaction writing two bytes then read two at address 80
+    write = i2c_msg.write(node_address, request)
+    read = i2c_msg.read(node_address, 10)
+    with SMBusWrapper(I2C_BUS) as bus:
+        bus.i2c_rdwr(write, read)
+        data = list(read)
+#        bus.close()
+
+    time.sleep(0.5)
+
+    return render_template(
+        "nodes.html",
+        data=repr(data),
+        RELEASE=RELEASE,
+        VERSION=VERSION
+    )
+
+    
 
 def i2c_address_list():
     # scan I2C network
     # Create array of Addresses
     # return array
     
-    busNumber = 0  # 1 indicates /dev/i2c-1
+    busNumber = I2C_BUS  # 1 indicates /dev/i2c-1
     bus = smbus2.SMBus(busNumber)
     deviceCount = 0
     i2cList = []
@@ -44,8 +74,6 @@ def i2c_address_list():
     for device in range(0, 128):
         try:
             bus.write_byte(device, 0)
-            # print("Found {0}".format(hex(device)))
-            # i2cList[device - 3] = device
             i2cList.append(hex(device))
             deviceCount = deviceCount + 1
         except:
