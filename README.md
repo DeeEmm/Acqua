@@ -1,6 +1,6 @@
 # Acqua - Data Acquisition and Processing unit
 
-![https://deeemm.com/images/aqua.png](https://deeemm.com/images/aqua.png)
+![https://deeemm.com/images/acqua.png](https://deeemm.com/images/acqua.png)
 
 
 Acqua is a simple extensible data acquisition controller that can also perform time and event based control functions. Acqua uses pre-configured signal processing 'nodes' connected via I2C to provide clean formatted and filtered data to the main controller which can then be easily logged or processed.
